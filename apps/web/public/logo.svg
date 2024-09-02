@@ -1,4 +1,10 @@
 <svg width="30" height="30" version="1.1" xmlns="http://www.w3.org/2000/svg">
   <rect x="0" y="0" width="30" height="30" fill="black" />
-  <path d="M3,12 L9,8 L15,12 L21,8 L27,12 M3,22 L9,18 L15,22 L21,18 L27,22" stroke="white" stroke-width="1" fill="transparent"/>
+  <path d="M3,12 L9,8 L15,12 L21,8 L27,12" stroke="white" stroke-width="1" fill="transparent"/>
+  <path d="M3,18 L9,22 L15,18 L21,22 L27,18" stroke="white" stroke-width="1" fill="transparent"/>
+  <path d="M-3,24 L15,6" stroke="black" stroke-width="1" fill="transparent"/>
+  <path d="M0,24 L18,6" stroke="black" stroke-width="1" fill="transparent"/>
+  <path d="M12,24 L30,6" stroke="black" stroke-width="1" fill="transparent"/>
+  <path d="M12,24 L30,6" stroke="black" stroke-width="1" fill="transparent"/>
+  <path d="M15,24 L33,6" stroke="black" stroke-width="1" fill="transparent"/>
 </svg>
