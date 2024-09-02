@@ -1,0 +1,20 @@
+{
+    "name": "my_app",
+    "type": "module",
+    "scripts": {
+        "check": "biome check . --diagnostic-level=error",
+        "format": "biome check . --write --unsafe",
+        "dev:web": "cd apps/web && bun dev",
+        "dev:server": "cd apps/server && bun dev",
+        "dev": "run-p dev:*"
+    },
+    "devDependencies": {
+        "@biomejs/biome": "^1.8.3",
+        "@types/bun": "latest",
+        "npm-run-all": "^4.1.5"
+    },
+    "workspaces": ["packages/*", "apps/*"],
+    "peerDependencies": {
+        "typescript": "^5.5.4"
+    }
+}

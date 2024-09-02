@@ -1,0 +1,17 @@
+{
+    "name": "i18n",
+    "type": "module",
+    "exports": {
+        "./react": "./src/react/index.tsx",
+        "./strings": "./src/strings/index.ts"
+    },
+    "devDependencies": {
+        "@types/bun": "latest"
+    },
+    "dependencies": {
+        "auth-components": "workspace:*"
+    },
+    "peerDependencies": {
+        "typescript": "^5.0.0"
+    }
+}

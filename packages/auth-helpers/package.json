@@ -1,0 +1,23 @@
+{
+    "name": "auth-helpers",
+    "type": "module",
+    "exports": {
+        "./hono-apps": "./src/hono-apps/index.ts",
+        "./models": "./src/models/index.ts",
+        "./routers": "./src/routers/index.ts",
+        "./services": "./src/services/index.ts"
+    },
+    "devDependencies": {
+        "@types/bun": "latest"
+    },
+    "peerDependencies": {
+        "typescript": "^5.5.4"
+    },
+    "dependencies": {
+        "arctic": "^1.9.2",
+        "database": "workspace:*",
+        "env-helpers": "workspace:*",
+        "hono": "^4.5.9",
+        "lucia": "^3.2.0"
+    }
+}

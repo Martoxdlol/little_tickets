@@ -1,0 +1,19 @@
+{
+    "name": "api-helpers",
+    "exports": {
+        ".": "./src/index.ts"
+    },
+    "dependencies": {
+        "auth-helpers": "*",
+        "database": "*",
+        "react": "^18.2.0"
+    },
+    "devDependencies": {
+        "@types/react": "^18.2.79"
+    },
+    "peerDependencies": {
+        "@trpc/server": "^11.0.0-rc.332",
+        "typescript": "^5.5.4",
+        "superjson": "^2.2.1"
+    }
+}

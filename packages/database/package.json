@@ -1,0 +1,23 @@
+{
+    "name": "database",
+    "type": "module",
+    "exports": {
+        ".": "./src/index.ts"
+    },
+    "scripts": {
+        "db:push": "drizzle-kit push"
+    },
+    "devDependencies": {
+        "@types/bun": "latest"
+    },
+    "peerDependencies": {
+        "typescript": "^5.5.4"
+    },
+    "dependencies": {
+        "drizzle-kit": "^0.24.2",
+        "drizzle-orm": "^0.33.0",
+        "nanoid": "^5.0.7",
+        "env-helpers": "workspace:*",
+        "postgres": "^3.4.4"
+    }
+}

@@ -1,0 +1,16 @@
+{
+    "name": "shared-utils",
+    "exports": {
+        "./helpers": "./src/helpers/index.ts",
+        "./hooks": "./src/hooks/index.ts"
+    },
+    "dependencies": {
+        "use-window-focus": "^1.4.3"
+    },
+    "devDependencies": {
+        "@types/react": "^18.3.3"
+    },
+    "peerDependencies": {
+        "typescript": "^5.5.4"
+    }
+}

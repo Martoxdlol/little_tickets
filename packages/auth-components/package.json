@@ -1,0 +1,19 @@
+{
+    "name": "auth-components",
+    "type": "module",
+    "exports": {
+        ".": "./src/index.tsx"
+    },
+    "devDependencies": {
+        "@types/bun": "latest"
+    },
+    "peerDependencies": {
+        "typescript": "^5.5.4"
+    },
+    "dependencies": {
+        "auth-helpers": "workspace:*",
+        "api-helpers": "workspace:*",
+        "shared-utils": "workspace:*",
+        "api": "workspace:*"
+    }
+}
