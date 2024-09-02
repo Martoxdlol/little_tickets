@@ -1,5 +1,5 @@
 {
-    "name": "my_app",
+    "name": "little_tickets",
     "type": "module",
     "scripts": {
         "check": "biome check . --diagnostic-level=error",

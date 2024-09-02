@@ -11,7 +11,7 @@ export function Menu(props: ComponentProps<'ul'>) {
 }
 
 const iconClasses = 'absolute left-3 [&>svg]:size-4'
-const buttonClasses = 'rounded-lg relative flex items-center justify-start pl-9 h-8'
+const buttonClasses = 'rounded-lg relative flex items-center justify-start pl-9 h-8 text-sm'
 const colorClasses = 'hover:bg-secondary'
 
 export function MenuButton({ icon, className, ...props }: ComponentProps<'button'> & { icon?: React.ReactNode }) {

@@ -64,6 +64,12 @@
     --chart-5: 340 75% 55%;
     --content: 210 7% 6%;
   }
+
+  .bg-content,
+  .bg-background,
+  .border {
+    transition: background-color 0.2s, border-color 0.2s;
+  }
 }
 
 @layer base {

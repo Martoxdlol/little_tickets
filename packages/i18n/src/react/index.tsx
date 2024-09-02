@@ -20,5 +20,9 @@ export function LangProvider(props: { children: React.ReactNode }) {
 export function useString(key: AppStringsKeys) {
     const lang = useContext(langContext)
 
-    return getString(key, lang)
+    return getString(key, lang)!
+}
+
+export function useLang() {
+    return useContext(langContext)
 }
