@@ -12,7 +12,13 @@ export const channels = createTable(
         name: text('name').notNull(),
 
         public: boolean('public').notNull().default(false),
-        allowListAll: boolean('allow_list_all').notNull().default(false),
+
+        defaultAllowCreateNew: boolean('default_allow_create_new'),
+        defaultAllowViewAll: boolean('default_allow_view_all'),
+        defaultAllowCommentOnAll: boolean('default_allow_comment_on_all'),
+        defaultAllowManageAll: boolean('default_allow_manage_all'),
+        defaultAllowManageAssignedSelf: boolean('default_allow_manage_assigned_self'),
+        defaultAllowFullAdmin: boolean('default_allow_full_admin').default(false).notNull(),
 
         organizationId: text('organization_id')
             .notNull()

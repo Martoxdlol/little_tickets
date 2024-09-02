@@ -5,7 +5,8 @@
         ".": "./src/index.ts"
     },
     "scripts": {
-        "db:push": "drizzle-kit push"
+        "db:push": "drizzle-kit push",
+        "db:studio": "drizzle-kit studio"
     },
     "devDependencies": {
         "@types/bun": "latest"

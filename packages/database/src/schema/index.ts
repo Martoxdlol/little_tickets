@@ -1,4 +1,5 @@
 export * from './auth'
+export * from './channel-members'
 export * from './channels'
 export * from './organization-members'
 export * from './organizations'

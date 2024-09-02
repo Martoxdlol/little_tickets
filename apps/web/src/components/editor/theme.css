@@ -1,0 +1,537 @@
+/**
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ *
+ */
+.LexicalEditorLink__ltr {
+    text-align: left;
+}
+
+.LexicalEditorLink__rtl {
+    text-align: right;
+}
+
+.LexicalEditorLink__paragraph {
+    margin: 10px 0;
+    position: relative;
+}
+
+.LexicalEditorLink__quote {
+    margin: 10px 0;
+    font-size: 15px;
+    border-left-color: rgb(206, 208, 212);
+    border-left-width: 4px;
+    border-left-style: solid;
+    padding-left: 16px;
+}
+
+.LexicalEditorLink__h1 {
+    font-size: 24px;
+    font-weight: 400;
+    margin: 0;
+}
+
+.LexicalEditorLink__h2 {
+    font-size: 15px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.LexicalEditorLink__h3 {
+    font-size: 12px;
+    margin: 0;
+}
+
+.LexicalEditorLink__indent {
+    --lexical-indent-base-value: 40px;
+}
+
+.LexicalEditorLink__textBold {
+    font-weight: bold;
+}
+
+.LexicalEditorLink__textItalic {
+    font-style: italic;
+}
+
+.LexicalEditorLink__textUnderline {
+    text-decoration: underline;
+}
+
+.LexicalEditorLink__textStrikethrough {
+    text-decoration: line-through;
+}
+
+.LexicalEditorLink__textUnderlineStrikethrough {
+    text-decoration: underline line-through;
+}
+
+.LexicalEditorLink__textSubscript {
+    font-size: 0.8em;
+    vertical-align: sub !important;
+}
+
+.LexicalEditorLink__textSuperscript {
+    font-size: 0.8em;
+    vertical-align: super;
+}
+
+.LexicalEditorLink__textCode {
+    padding: 1px 0.25rem;
+    font-family: Menlo, Consolas, Monaco, monospace;
+    font-size: 94%;
+}
+
+.LexicalEditorLink__hashtag {
+    background-color: rgba(88, 144, 255, 0.15);
+    border-bottom: 1px solid rgba(88, 144, 255, 0.3);
+}
+
+.LexicalEditorLink__link {
+    color: rgb(33, 111, 219);
+    text-decoration: none;
+}
+
+.LexicalEditorLink__link:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.LexicalEditorLink__code {
+    font-family: Menlo, Consolas, Monaco, monospace;
+    display: block;
+    padding: 8px 8px 8px 22px;
+    line-height: 1.53;
+    font-size: 13px;
+    margin: 0;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    overflow-x: auto;
+    position: relative;
+    tab-size: 2;
+    background: hsl(var(--secondary));
+}
+
+.LexicalEditorLink__code:before {
+    content: attr(data-gutter);
+    position: absolute;
+    left: 0;
+    top: 0;
+    /* border-right: 1px solid #ccc; */
+    padding: 8px;
+    color: #777;
+    white-space: pre-wrap;
+    text-align: right;
+    min-width: 25px;
+}
+
+.LexicalEditorLink__table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    overflow-y: scroll;
+    overflow-x: scroll;
+    table-layout: fixed;
+    width: max-content;
+    margin: 0px 25px 30px 0px;
+}
+
+.LexicalEditorLink__tableSelection *::selection {
+    background-color: transparent;
+}
+
+.LexicalEditorLink__tableSelected {
+    outline: 2px solid rgb(60, 132, 244);
+}
+
+.LexicalEditorLink__tableCell {
+    border: 1px solid #bbb;
+    width: 75px;
+    min-width: 75px;
+    vertical-align: top;
+    text-align: start;
+    padding: 6px 8px;
+    position: relative;
+    outline: none;
+}
+
+.LexicalEditorLink__tableCellSortedIndicator {
+    display: block;
+    opacity: 0.5;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: #999;
+}
+
+.LexicalEditorLink__tableCellResizer {
+    position: absolute;
+    right: -4px;
+    height: 100%;
+    width: 8px;
+    cursor: ew-resize;
+    z-index: 10;
+    top: 0;
+}
+
+.LexicalEditorLink__tableCellHeader {
+    background-color: #f2f3f5;
+    text-align: start;
+}
+
+.LexicalEditorLink__tableCellSelected {
+    background-color: #c9dbf0;
+}
+
+.LexicalEditorLink__tableCellPrimarySelected {
+    border: 2px solid rgb(60, 132, 244);
+    display: block;
+    height: calc(100% - 2px);
+    position: absolute;
+    width: calc(100% - 2px);
+    left: -1px;
+    top: -1px;
+    z-index: 2;
+}
+
+.LexicalEditorLink__tableCellEditing {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+    border-radius: 3px;
+}
+
+.LexicalEditorLink__tableAddColumns {
+    position: absolute;
+    background-color: #eee;
+    height: 100%;
+    animation: table-controls 0.2s ease;
+    border: 0;
+    cursor: pointer;
+}
+
+.LexicalEditorLink__tableAddColumns:after {
+    /* background-image: url(../images/icons/plus.svg); */
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: block;
+    content: ' ';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.4;
+}
+
+.LexicalEditorLink__tableAddColumns:hover,
+.LexicalEditorLink__tableAddRows:hover {
+    background-color: #c9dbf0;
+}
+
+.LexicalEditorLink__tableAddRows {
+    position: absolute;
+    width: calc(100% - 25px);
+    background-color: #eee;
+    animation: table-controls 0.2s ease;
+    border: 0;
+    cursor: pointer;
+}
+
+.LexicalEditorLink__tableAddRows:after {
+    /* background-image: url(../images/icons/plus.svg); */
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: block;
+    content: ' ';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.4;
+}
+
+@keyframes table-controls {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.LexicalEditorLink__tableCellResizeRuler {
+    display: block;
+    position: absolute;
+    width: 1px;
+    background-color: rgb(60, 132, 244);
+    height: 100%;
+    top: 0;
+}
+
+.LexicalEditorLink__tableCellActionButtonContainer {
+    display: block;
+    right: 5px;
+    top: 6px;
+    position: absolute;
+    z-index: 4;
+    width: 20px;
+    height: 20px;
+}
+
+.LexicalEditorLink__tableCellActionButton {
+    background-color: #eee;
+    display: block;
+    border: 0;
+    border-radius: 20px;
+    width: 20px;
+    height: 20px;
+    color: #222;
+    cursor: pointer;
+}
+
+.LexicalEditorLink__tableCellActionButton:hover {
+    background-color: #ddd;
+}
+
+.LexicalEditorLink__characterLimit {
+    display: inline;
+    background-color: #ffbbbb !important;
+}
+
+.LexicalEditorLink__ol1 {
+    padding: 0;
+    margin: 0;
+    list-style-position: outside;
+    list-style: decimal;
+}
+
+.LexicalEditorLink__ol2 {
+    padding: 0;
+    margin: 0;
+    list-style-type: upper-alpha;
+    list-style-position: outside;
+    list-style: decimal;
+}
+
+.LexicalEditorLink__ol3 {
+    padding: 0;
+    margin: 0;
+    list-style-type: lower-alpha;
+    list-style-position: outside;
+    list-style: decimal;
+}
+
+.LexicalEditorLink__ol4 {
+    padding: 0;
+    margin: 0;
+    list-style-type: upper-roman;
+    list-style-position: outside;
+    list-style: decimal;
+}
+
+.LexicalEditorLink__ol5 {
+    padding: 0;
+    margin: 0;
+    list-style-type: lower-roman;
+    list-style-position: outside;
+    list-style: decimal;
+}
+
+.LexicalEditorLink__ul {
+    padding: 0;
+    margin: 0;
+    list-style-position: outside;
+    list-style: disc;
+}
+
+.LexicalEditorLink__listItem {
+    margin: 0 32px;
+}
+
+.LexicalEditorLink__listItemChecked,
+.LexicalEditorLink__listItemUnchecked {
+    position: relative;
+    margin-left: 8px;
+    margin-right: 8px;
+    padding-left: 24px;
+    padding-right: 24px;
+    list-style-type: none;
+    outline: none;
+}
+
+.LexicalEditorLink__listItemChecked {
+    text-decoration: line-through;
+}
+
+.LexicalEditorLink__listItemUnchecked:before,
+.LexicalEditorLink__listItemChecked:before {
+    content: '';
+    width: 16px;
+    height: 16px;
+    top: 5px;
+    left: 0;
+    cursor: pointer;
+    display: block;
+    background-size: cover;
+    position: absolute;
+}
+
+.LexicalEditorLink__listItemUnchecked[dir='rtl']:before,
+.LexicalEditorLink__listItemChecked[dir='rtl']:before {
+    left: auto;
+    right: 0;
+}
+
+.LexicalEditorLink__listItemUnchecked:focus:before,
+.LexicalEditorLink__listItemChecked:focus:before {
+    box-shadow: 0 0 0 2px hsl(var(--ring));
+    border-radius: 2px;
+}
+
+.LexicalEditorLink__listItemUnchecked:before {
+    border: 1px solid #999;
+    border-radius: 2px;
+}
+
+.LexicalEditorLink__listItemChecked:before {
+    border: 1px solid rgb(59 130 246);
+    border-radius: 2px;
+    background-color: rgb(59 130 246);
+    background-repeat: no-repeat;
+}
+
+.LexicalEditorLink__listItemChecked:after {
+    content: '';
+    cursor: pointer;
+    border-color: #fff;
+    border-style: solid;
+    position: absolute;
+    display: block;
+    top: 8px;
+    width: 5px;
+    left: 6px;
+    right: 7px;
+    height: 8px;
+    transform: rotate(45deg);
+    border-width: 0 2px 2px 0;
+}
+
+.LexicalEditorLink__nestedListItem {
+    list-style-type: none;
+}
+
+.LexicalEditorLink__nestedListItem:before,
+.LexicalEditorLink__nestedListItem:after {
+    display: none;
+}
+
+.LexicalEditorLink__tokenComment {
+    color: slategray;
+}
+
+.LexicalEditorLink__tokenPunctuation {
+    color: #999;
+}
+
+.LexicalEditorLink__tokenProperty {
+    color: #905;
+}
+
+.LexicalEditorLink__tokenSelector {
+    color: #690;
+}
+
+.LexicalEditorLink__tokenOperator {
+    color: #9a6e3a;
+}
+
+.LexicalEditorLink__tokenAttr {
+    color: #07a;
+}
+
+.LexicalEditorLink__tokenVariable {
+    color: #e90;
+}
+
+.LexicalEditorLink__tokenFunction {
+    color: #dd4a68;
+}
+
+.LexicalEditorLink__mark {
+    background: rgba(255, 212, 0, 0.14);
+    border-bottom: 2px solid rgba(255, 212, 0, 0.3);
+    padding-bottom: 2px;
+}
+
+.LexicalEditorLink__markOverlap {
+    background: rgba(255, 212, 0, 0.3);
+    border-bottom: 2px solid rgba(255, 212, 0, 0.7);
+}
+
+.LexicalEditorLink__mark.selected {
+    background: rgba(255, 212, 0, 0.5);
+    border-bottom: 2px solid rgba(255, 212, 0, 1);
+}
+
+.LexicalEditorLink__markOverlap.selected {
+    background: rgba(255, 212, 0, 0.7);
+    border-bottom: 2px solid rgba(255, 212, 0, 0.7);
+}
+
+.LexicalEditorLink__embedBlock {
+    user-select: none;
+}
+
+.LexicalEditorLink__embedBlockFocus {
+    outline: 2px solid rgb(60, 132, 244);
+}
+
+.LexicalEditorLink__layoutContainer {
+    display: grid;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.LexicalEditorLink__layoutItem {
+    border: 1px dashed #ddd;
+    padding: 8px 16px;
+}
+
+.LexicalEditorLink__autocomplete {
+    color: #ccc;
+}
+
+.LexicalEditorLink__hr {
+    padding: 2px 2px;
+    border: none;
+    margin: 1em 0;
+    cursor: pointer;
+}
+
+.LexicalEditorLink__hr:after {
+    content: '';
+    display: block;
+    height: 2px;
+    background-color: #ccc;
+    line-height: 2px;
+}
+
+.LexicalEditorLink__hr.selected {
+    outline: 2px solid rgb(60, 132, 244);
+    user-select: none;
+}
+
+.editor-toolbar button:hover {
+    background-color: transparent;
+}
+
+.editor-toolbar button.text-secondary-foreground {
+    background-color: hsl(var(--accent));
+}

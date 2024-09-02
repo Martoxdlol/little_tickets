@@ -1,6 +1,8 @@
 import { Outlet, createBrowserRouter, redirect } from 'react-router-dom'
 import { OrganizationLayout } from '../layouts/organization-layout'
+import PageLayout from '../scaffolding/page-layout'
 import { HomeScreen } from '../screens/home'
+import { OrgHome } from '../screens/org/home'
 
 export const router = createBrowserRouter([
     {
@@ -18,5 +20,15 @@ export const router = createBrowserRouter([
                 <Outlet />
             </OrganizationLayout>
         ),
+        children: [
+            {
+                path: '',
+                element: (
+                    <PageLayout>
+                        <OrgHome />
+                    </PageLayout>
+                ),
+            },
+        ],
     },
 ])

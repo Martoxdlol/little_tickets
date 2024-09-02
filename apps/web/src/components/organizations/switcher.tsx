@@ -1,11 +1,12 @@
 import { api } from 'api/react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { useOrgSlug } from '~/hooks'
 import { Combobox } from '../ui/custom/combobox'
 
 export function OrganizationSwitcher() {
     const { data: orgs } = api.organizations.list.useQuery()
 
-    const orgSlug = useParams().org
+    const orgSlug = useOrgSlug()
 
     const navigate = useNavigate()
 

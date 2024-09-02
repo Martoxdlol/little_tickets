@@ -51,6 +51,13 @@ export const organizationProcedure = protectedProcedure
                 name: schema.organizations.name,
                 slug: schema.organizations.slug,
                 role: schema.organizationMembers.role,
+
+                defaultChannelAllowCreateNew: schema.organizations.defaultChannelAllowCreateNew,
+                defaultChannelAllowViewAll: schema.organizations.defaultChannelAllowViewAll,
+                defaultChannelAllowCommentOnAll: schema.organizations.defaultChannelAllowCommentOnAll,
+                defaultChannelAllowManageAll: schema.organizations.defaultChannelAllowManageAll,
+                defaultChannelAllowManageAssignedSelf: schema.organizations.defaultChannelAllowManageAssignedSelf,
+                defaultChannelAllowFullAdmin: schema.organizations.defaultChannelAllowFullAdmin,
             })
             .from(schema.organizations)
             .innerJoin(

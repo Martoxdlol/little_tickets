@@ -21,6 +21,7 @@
         "database": "workspace:*",
         "auth-helpers": "workspace:*",
         "organizations": "workspace:*",
+        "channels": "workspace:*",
         "env-helpers": "workspace:*"
     }
 }

@@ -11,4 +11,5 @@ export const appStringsSpanish: Record<AppStringsKeys, string | null> = {
     myAccount: 'Mi cuenta',
     slugErrorMessage: 'Debe tener entre 4 y 56 caracteres, y solo contener letras, números y guiones',
     nameErrorMessage: 'Debe tener entre 1 y 255 caracteres',
+    newTicket: 'Nuevo ticket',
 }
