@@ -1,4 +1,5 @@
 import { api } from 'api/react'
+import { useString } from 'i18n/react'
 import { Link } from 'react-router-dom'
 import Center from '~/components/scaffolding/center'
 import { Section } from '~/components/scaffolding/section'
@@ -12,6 +13,8 @@ export function OrgHome() {
         organizationSlug: organization,
     })
 
+    const noTickets = useString('noTickets')
+
     return (
         <>
             {channels?.map((channel) => (
@@ -20,7 +23,7 @@ export function OrgHome() {
                         <Title>{channel.name}</Title>
                     </Link>
                     <div className='relative h-24 rounded-md border border-dashed border-black/25 dark:border-white/25'>
-                        <Center className='text-xs opacity-secondary'>No tickets</Center>
+                        <Center className='text-xs opacity-secondary'>{noTickets}</Center>
                     </div>
                 </Section>
             ))}

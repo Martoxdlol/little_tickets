@@ -1,6 +1,6 @@
 import { TRPCError, organizationProcedure, router } from 'api-helpers'
 import { schema } from 'database'
-import { slugSchema } from 'shared-utils/helpers'
+import { slugSchema, useFirstBoolean } from 'shared-utils/helpers'
 import { z } from 'zod'
 import { getUserChannels } from '../services'
 
@@ -39,12 +39,32 @@ export const channels = router({
             })
         }),
 
-    list: organizationProcedure.query(async ({ ctx }) => {
-        const channels = await getUserChannels(ctx.db, ctx.organization.id)
+    list: organizationProcedure
+        .input(
+            z.object({
+                canCreateNew: z.boolean().optional(),
+            }),
+        )
+        .query(async ({ ctx, input }) => {
+            let channels = await getUserChannels(ctx.db, ctx.organization.id)
 
-        return channels.map(({ channels, channel_member: { id, organizationId, ...member } }) => ({
-            ...channels,
-            ...member,
-        }))
-    }),
+            if (input.canCreateNew) {
+                channels = channels.filter((channel) => {
+                    if (ctx.organization.role !== 'member' || channel.channel_member.allowFullAdmin) {
+                        return true
+                    }
+
+                    return useFirstBoolean(
+                        channel.channel_member.allowCreateNew,
+                        channel.channels.defaultAllowCreateNew,
+                        ctx.organization.defaultChannelAllowCreateNew,
+                    )
+                })
+            }
+
+            return channels.map(({ channels, channel_member: { id, organizationId, ...member } }) => ({
+                ...channels,
+                ...member,
+            }))
+        }),
 })

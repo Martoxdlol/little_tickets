@@ -20,6 +20,9 @@ export function OrganizationSwitcher() {
             }))}
             value={orgSlug}
             onValueChange={(value) => {
+                if (value) {
+                    localStorage.setItem('last-org', value)
+                }
                 navigate(`/orgs/${value}`)
             }}
         />

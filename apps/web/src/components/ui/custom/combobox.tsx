@@ -2,7 +2,7 @@
 
 import { useLang } from 'i18n/react'
 import { Check, ChevronsUpDown, XIcon } from 'lucide-react'
-import { useState } from 'react'
+import { createContext, useContext, useState } from 'react'
 import { Button } from '~/components/ui/button'
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '~/components/ui/command'
 import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover'
@@ -12,6 +12,8 @@ export type ComboboxOption<T> = {
     label: string
     value: T
 }
+
+const comboboxCtx = createContext<{ label: string; value: string | null }>({ label: '', value: null })
 
 export function Combobox<T extends { toString(): string }>(props: {
     options?: ComboboxOption<T>[]
@@ -24,6 +26,7 @@ export function Combobox<T extends { toString(): string }>(props: {
     defaultText?: string
     emptyText?: string
     className?: string
+    children?: React.ReactNode
 }) {
     const [open, setOpen] = useState(false)
     const value = props.value
@@ -79,12 +82,21 @@ export function Combobox<T extends { toString(): string }>(props: {
 
     return (
         <Popover open={open} onOpenChange={setOpen}>
-            <PopoverTrigger asChild>
-                <Button variant='outline' role='combobox' aria-expanded={open} className={cn('justify-between', props.className)}>
-                    {displayText}
-                    <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
-                </Button>
-            </PopoverTrigger>
+            <comboboxCtx.Provider value={{ label: displayText, value: value ? value.toString() : null }}>
+                <PopoverTrigger asChild>
+                    {props.children || (
+                        <Button
+                            variant='outline'
+                            role='combobox'
+                            aria-expanded={open}
+                            className={cn('pl-2 gap-2 justify-start', props.className)}
+                        >
+                            <ChevronsUpDown className='size-4 shrink-0 opacity-50' />
+                            {displayText}
+                        </Button>
+                    )}
+                </PopoverTrigger>
+            </comboboxCtx.Provider>
             <PopoverContent className='w-[250px] p-0'>
                 <Command>
                     <CommandInput placeholder={searchLabel} />
@@ -120,4 +132,8 @@ export function Combobox<T extends { toString(): string }>(props: {
             </PopoverContent>
         </Popover>
     )
+}
+
+export function useComboboxOption() {
+    return useContext(comboboxCtx)
 }

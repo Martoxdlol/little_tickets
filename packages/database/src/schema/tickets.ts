@@ -1,5 +1,5 @@
 import { relations } from 'drizzle-orm'
-import { index, json, text, varchar } from 'drizzle-orm/pg-core'
+import { index, integer, json, text, unique, varchar } from 'drizzle-orm/pg-core'
 import { users } from './auth'
 import { channels } from './channels'
 import { columnId, createTable, createdAt, updatedAt, version } from './lib'
@@ -15,6 +15,8 @@ export const tickets = createTable(
     'ticket',
     {
         id: columnId,
+
+        code: integer('code').notNull(),
 
         title: varchar('title', { length: 512 }).notNull(),
         description: json('description').notNull(),
@@ -34,7 +36,9 @@ export const tickets = createTable(
 
         createdByUserId: varchar('created_by_user_id', {
             length: 22,
-        }).references(() => users.id),
+        })
+            .notNull()
+            .references(() => users.id),
 
         assignedToUserId: varchar('assigned_to_user_id', {
             length: 22,
@@ -44,13 +48,17 @@ export const tickets = createTable(
             length: 22,
         }).references(() => users.id),
 
-        organizationId: text('organization_id').references(() => organizations.id),
+        organizationId: text('organization_id')
+            .notNull()
+            .references(() => organizations.id),
 
         createdAt,
         updatedAt,
     },
     (t) => ({
+        uniqueCode: unique().on(t.code, t.channelId),
         organizationIdIndex: index().on(t.organizationId),
+        channelIdIndex: index().on(t.channelId),
     }),
 )
 

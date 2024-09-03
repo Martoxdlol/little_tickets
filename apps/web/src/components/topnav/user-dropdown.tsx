@@ -2,7 +2,7 @@
 
 import { useSession } from 'auth-components'
 import { useString } from 'i18n/react'
-import { LogOut, MoonIcon, SunIcon } from 'lucide-react'
+import { LanguagesIcon, LogOut, MoonIcon, SunIcon } from 'lucide-react'
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -38,6 +38,8 @@ export function UserDropDown(props: { children: React.ReactNode }) {
     const logoutString = useString('logout')
     const { setTheme, theme } = useTheme()
 
+    const themeStr = useString('theme')
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger>{props.children}</DropdownMenuTrigger>
@@ -48,7 +50,7 @@ export function UserDropDown(props: { children: React.ReactNode }) {
                     <DropdownMenuSubTrigger>
                         <MoonIcon className='dark:block hidden mr-2 h-4 w-4' />
                         <SunIcon className='dark:hidden mr-2 h-4 w-4' />
-                        <span>Theme</span>
+                        <span>{themeStr}</span>
                     </DropdownMenuSubTrigger>
                     <DropdownMenuPortal>
                         <DropdownMenuSubContent>
@@ -61,6 +63,24 @@ export function UserDropDown(props: { children: React.ReactNode }) {
                                 </DropdownMenuRadioItem>
                                 <DropdownMenuRadioItem value='system' className='flex items-center gap-2'>
                                     System
+                                </DropdownMenuRadioItem>
+                            </DropdownMenuRadioGroup>
+                        </DropdownMenuSubContent>
+                    </DropdownMenuPortal>
+                </DropdownMenuSub>
+                <DropdownMenuSub>
+                    <DropdownMenuSubTrigger>
+                        <LanguagesIcon className='mr-2 size-4' />
+                        <span>Language</span>
+                    </DropdownMenuSubTrigger>
+                    <DropdownMenuPortal>
+                        <DropdownMenuSubContent>
+                            <DropdownMenuRadioGroup>
+                                <DropdownMenuRadioItem value='en' className='flex items-center gap-2'>
+                                    English
+                                </DropdownMenuRadioItem>
+                                <DropdownMenuRadioItem value='es' className='flex items-center gap-2'>
+                                    Español
                                 </DropdownMenuRadioItem>
                             </DropdownMenuRadioGroup>
                         </DropdownMenuSubContent>

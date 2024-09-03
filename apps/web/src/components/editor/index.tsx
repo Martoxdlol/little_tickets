@@ -17,7 +17,7 @@ import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext
 import { HorizontalRuleNode } from '@lexical/react/LexicalHorizontalRuleNode'
 import { HeadingNode, QuoteNode } from '@lexical/rich-text'
 import { TableCellNode, TableNode, TableRowNode } from '@lexical/table'
-import { type SerializedEditorState } from 'lexical'
+import type { SerializedEditorState } from 'lexical'
 import { useEffect, useRef } from 'react'
 import { cn } from '~/lib/utils'
 import { EDITOR_TRANSFORMERS } from './markdow-transformers'
@@ -25,8 +25,7 @@ import { Placeholder } from './placeholder'
 import theme from './theme'
 import { Toolbar } from './toolbar'
 
-const URL_MATCHER =
-    /((https?:\/\/(www\.)?)|(www\.))[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/
+const URL_MATCHER = /((https?:\/\/(www\.)?)|(www\.))[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/
 
 const MATCHERS = [
     (text: string) => {
@@ -39,9 +38,7 @@ const MATCHERS = [
             index: match.index,
             length: fullMatch.length,
             text: fullMatch,
-            url: fullMatch.startsWith('http')
-                ? fullMatch
-                : `https://${fullMatch}`,
+            url: fullMatch.startsWith('http') ? fullMatch : `https://${fullMatch}`,
             // attributes: { rel: 'noreferrer', target: '_blank' }, // Optional link attributes
         }
     },
@@ -87,20 +84,11 @@ export function Editor(props: {
                 ],
             }}
         >
-            <div className="relative">
+            <div className='relative'>
                 <RichTextPlugin
-                    contentEditable={
-                        <ContentEditable
-                            className={cn(
-                                'outline-none',
-                                props.contentClassName,
-                            )}
-                        />
-                    }
+                    contentEditable={<ContentEditable className={cn('outline-none', props.contentClassName)} />}
                     ErrorBoundary={LexicalErrorBoundary}
-                    placeholder={
-                        <Placeholder>Start typing here...</Placeholder>
-                    }
+                    placeholder={<Placeholder>Add description...</Placeholder>}
                 />
             </div>
             <HistoryPlugin />
@@ -110,10 +98,7 @@ export function Editor(props: {
             <AutoLinkPlugin matchers={MATCHERS} />
             <MarkdownShortcutPlugin transformers={EDITOR_TRANSFORMERS} />
             <Toolbar className={props.toolbarClassName} />
-            <EditorValue
-                onChange={props.onChange}
-                initialValue={props.initialValue}
-            />
+            <EditorValue onChange={props.onChange} initialValue={props.initialValue} />
         </LexicalComposer>
     )
 }

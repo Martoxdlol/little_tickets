@@ -25,7 +25,7 @@ export function getLang(locale: string) {
 export function getString(key: AppStringsKeys, locale: string) {
     const lang = getLang(locale)
 
-    return allAppStrings[lang][key]
+    return allAppStrings[lang][key] ?? allAppStrings.en[key]!
 }
 
 export function langIsSupported(lang: string): lang is LangKeys {

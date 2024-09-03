@@ -10,4 +10,9 @@ export const appStringsEnglish = {
     slugErrorMessage: 'Must be between 4 and 56 characters, and only contain letters, numbers, and dashes',
     nameErrorMessage: 'Must be between 1 and 255 characters',
     newTicket: 'New ticket',
+    noTickets: 'No tickets',
+    theme: 'Theme',
+    home: 'Home',
+    newChannel: 'New channel',
+    nothingHere: 'Nothing here',
 } as const

@@ -3,6 +3,10 @@ const init: Record<string, string> = { cache: 'no-cache', mode: 'no-cors' }
 
 export const fetcher = <T>(url: string): Promise<T> => fetch(url, init).then((res) => res.json() as T)
 
+export function useFirstBoolean(...values: [...unknown[], boolean]) {
+    return values.find((v) => v === false || v === true) || false
+}
+
 export const slugSchema = z
     .string()
     .regex(/^[a-z0-9]+(-[a-z0-9]+)*$/)
@@ -30,3 +34,5 @@ export function nameToSlug(name: string) {
         .replace(/--+/g, '-')
         .replace(/^-+|-+$/g, '')
 }
+
+export const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))

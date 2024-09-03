@@ -10,6 +10,16 @@
     <title>Little Tickets</title>
   </head>
   <body>
+    <script>
+      const theme = window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light";
+      const savedTheme = localStorage.getItem("theme");
+      const useDarkClass = (savedTheme || theme) === "dark";
+      if (useDarkClass) {
+        document.querySelector("html").classList.add("dark");
+      }
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

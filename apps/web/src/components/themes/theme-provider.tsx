@@ -5,15 +5,22 @@ export type Theme = 'light' | 'dark' | 'system'
 
 const themeContext = createContext<{ theme: Theme; setTheme: (theme: Theme) => void }>({ theme: 'system', setTheme: () => {} })
 
+function getUseDarkClass(theme: Theme) {
+    if (theme === 'system') {
+        return window.matchMedia('(prefers-color-scheme: dark)').matches
+    }
+
+    return theme === 'dark'
+}
+
 export function ThemeProvider(props: { children: React.ReactNode }) {
     const [theme, setTheme] = useLocalStorage<Theme>('theme', 'system')
 
     useLayoutEffect(() => {
-        if (theme === 'system') {
-            const dark = window.matchMedia('(prefers-color-scheme: dark)').matches
-            document.querySelector('html')!.classList.toggle('dark', dark)
+        if (getUseDarkClass(theme)) {
+            document.querySelector('html')!.classList.add('dark')
         } else {
-            document.querySelector('html')!.classList.toggle('dark', theme === 'dark')
+            document.querySelector('html')!.classList.remove('dark')
         }
     }, [theme])
 

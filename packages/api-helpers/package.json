@@ -6,6 +6,8 @@
     "dependencies": {
         "auth-helpers": "*",
         "database": "*",
+        "shared-utils": "*",
+        "i18n": "*",
         "drizzle-orm": "^0.33.0",
         "react": "^18.2.0",
         "zod": "^3.23.8"

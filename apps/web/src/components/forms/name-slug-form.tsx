@@ -88,8 +88,6 @@ export function NameSlugForm(props: {
         optionalSlugSchema = slugSchema.or(z.literal(''))
     }
 
-    console.log(defaultSlug)
-
     return (
         <form
             className='flex flex-col gap-2'
