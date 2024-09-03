@@ -79,6 +79,7 @@
   }
 
   body {
+    overflow: hidden;
     @apply bg-background text-foreground;
   }
 }

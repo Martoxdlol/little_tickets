@@ -78,7 +78,7 @@ export function NewTicketModal(props: { children: React.ReactNode }) {
                     <Editor
                         initialValue={value}
                         onChange={(value) => setValue(value)}
-                        contentClassName='h-[calc(var(--screen-height)_-_161px)] min-h-[110px] sm:h-auto sm:max-h-[calc(var(--screen-height)_-_180px)] overflow-auto'
+                        contentClassName='h-[calc(var(--screen-height)_-_161px)] min-h-[min(calc(var(--screen-height)_-_200px),_110px)] sm:h-auto sm:max-h-[calc(var(--screen-height)_-_180px)] overflow-auto'
                         toolbarClassName={toolbarClassName}
                     />
                 </div>
