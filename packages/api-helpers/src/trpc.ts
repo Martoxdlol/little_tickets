@@ -47,7 +47,7 @@ export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
     })
 })
 
-export const organizationProcedure = protectedProcedure
+export const optionalOrganizationProcedure = protectedProcedure
     .input(z.object({ organizationSlug: z.string() }))
     .use(async ({ input, ctx, next }) => {
         const [result] = await ctx.db
@@ -75,20 +75,29 @@ export const organizationProcedure = protectedProcedure
             )
             .limit(1)
 
-        if (!result) {
-            throw new TRPCError({
-                code: 'NOT_FOUND',
-                message: 'Organization not found',
-            })
-        }
-
         return next({
             ctx: {
                 ...ctx,
-                organization: result,
+                organization: result ?? null,
             },
         })
     })
+
+export const organizationProcedure = optionalOrganizationProcedure.use(async ({ ctx, next }) => {
+    if (!ctx.organization) {
+        throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Organization not found',
+        })
+    }
+
+    return next({
+        ctx: {
+            ...ctx,
+            organization: ctx.organization,
+        },
+    })
+})
 
 export const channelProcedure = organizationProcedure.input(z.object({ channelSlug: z.string() })).use(async ({ input, ctx, next }) => {
     const [result] = await ctx.db

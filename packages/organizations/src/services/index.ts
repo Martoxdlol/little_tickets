@@ -1,9 +1,12 @@
 import { type DBTX, schema } from 'database'
-import { eq } from 'drizzle-orm'
+import { and, eq } from 'drizzle-orm'
 
-export async function getUserOrganizations(db: DBTX) {
+export async function getUserOrganizations(db: DBTX, userId: string) {
     return await db
         .select()
         .from(schema.organizations)
-        .innerJoin(schema.organizationMembers, eq(schema.organizations.id, schema.organizationMembers.organizationId))
+        .innerJoin(
+            schema.organizationMembers,
+            and(eq(schema.organizations.id, schema.organizationMembers.organizationId), eq(schema.organizationMembers.userId, userId)),
+        )
 }

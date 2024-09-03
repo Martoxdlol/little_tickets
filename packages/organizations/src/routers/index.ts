@@ -1,4 +1,4 @@
-import { organizationProcedure, protectedProcedure, router } from 'api-helpers'
+import { optionalOrganizationProcedure, protectedProcedure, router } from 'api-helpers'
 import { schema } from 'database'
 import { slugSchema } from 'shared-utils/helpers'
 import { z } from 'zod'
@@ -30,12 +30,12 @@ export const organizations = router({
             })
         }),
 
-    get: organizationProcedure.query(async ({ ctx, input }) => {
+    get: optionalOrganizationProcedure.query(async ({ ctx, input }) => {
         return ctx.organization
     }),
 
     list: protectedProcedure.query(async ({ ctx }) => {
-        const orgs = await getUserOrganizations(ctx.db)
+        const orgs = await getUserOrganizations(ctx.db, ctx.session.userId)
 
         return orgs.map((org) => ({
             id: org.organization.id,
