@@ -3,7 +3,8 @@
     "module": "src/index.ts",
     "type": "module",
     "scripts": {
-        "dev": "bun --watch src/index.ts"
+        "dev": "bun --watch src/index.ts",
+        "build": "bun build src/index.ts --target=node --outfile dist/server.js --define process.env.NODE_ENV=\"'production'\""
     },
     "devDependencies": {
         "@types/bun": "latest"
@@ -12,8 +13,9 @@
         "typescript": "^5.5.4"
     },
     "dependencies": {
-        "hono": "^4.5.9",
+        "@hono/node-server": "^1.12.2",
+        "api": "workspace:*",
         "auth-helpers": "workspace:*",
-        "api": "workspace:*"
+        "hono": "^4.5.9"
     }
 }

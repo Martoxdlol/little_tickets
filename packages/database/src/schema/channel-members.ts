@@ -24,7 +24,9 @@ export const channelMembers = createTable(
             .notNull()
             .references(() => channels.id),
 
-        organizationId: text('organization_id').references(() => organizations.id),
+        organizationId: text('organization_id')
+            .notNull()
+            .references(() => organizations.id),
     },
     (t) => ({
         userIdIndex: index().on(t.userId),

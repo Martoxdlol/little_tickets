@@ -30,12 +30,19 @@ export const channels = router({
                         organizationId: ctx.organization.id,
                     })
                     .returning()
+
+                if (!channel) {
+                    tx.rollback()
+                    return
+                }
+
                 await tx.insert(schema.channelMembers).values({
                     channelId: channel.id,
                     userId: ctx.session.userId,
                     allowFullAdmin: true,
+                    organizationId: ctx.organization.id,
                 })
-                return channel!
+                return channel
             })
         }),
 

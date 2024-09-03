@@ -15,6 +15,14 @@ export function ChannelScreen() {
         organizationSlug: orgSlug,
     })
 
+    if (query.error?.data?.code === 'NOT_FOUND') {
+        return (
+            <Center>
+                <p className='opacity-secondary'>Channel not found</p>
+            </Center>
+        )
+    }
+
     if (query.data?.length === 0) {
         return (
             <Center>

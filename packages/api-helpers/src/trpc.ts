@@ -122,20 +122,24 @@ export const channelProcedure = organizationProcedure.input(z.object({ channelSl
         )
         .limit(1)
 
-    let canCreateNew = useFirstBoolean(result.allowCreateNew, result.defaultAllowCreateNew, ctx.organization.defaultChannelAllowCreateNew)
-    let canViewAll = useFirstBoolean(result.allowViewAll, result.defaultAllowViewAll, ctx.organization.defaultChannelAllowViewAll)
+    let canCreateNew = useFirstBoolean(result?.allowCreateNew, result?.defaultAllowCreateNew, ctx.organization.defaultChannelAllowCreateNew)
+    let canViewAll = useFirstBoolean(result?.allowViewAll, result?.defaultAllowViewAll, ctx.organization.defaultChannelAllowViewAll)
     let canCommentOnAll = useFirstBoolean(
-        result.allowCommentOnAll,
-        result.defaultAllowCommentOnAll,
+        result?.allowCommentOnAll,
+        result?.defaultAllowCommentOnAll,
         ctx.organization.defaultChannelAllowCommentOnAll,
     )
-    let canManageAll = useFirstBoolean(result.allowManageAll, result.defaultAllowManageAll, ctx.organization.defaultChannelAllowManageAll)
+    let canManageAll = useFirstBoolean(result?.allowManageAll, result?.defaultAllowManageAll, ctx.organization.defaultChannelAllowManageAll)
     let canManageAssignedSelf = useFirstBoolean(
-        result.allowManageAssignedSelf,
-        result.defaultAllowManageAssignedSelf,
+        result?.allowManageAssignedSelf,
+        result?.defaultAllowManageAssignedSelf,
         ctx.organization.defaultChannelAllowManageAssignedSelf,
     )
-    const canFullAdmin = useFirstBoolean(result.allowFullAdmin, result.defaultAllowFullAdmin, ctx.organization.defaultChannelAllowFullAdmin)
+    const canFullAdmin = useFirstBoolean(
+        result?.allowFullAdmin,
+        result?.defaultAllowFullAdmin,
+        ctx.organization.defaultChannelAllowFullAdmin,
+    )
     if (canFullAdmin || ctx.organization.role !== 'member') {
         canCreateNew = true
         canViewAll = true
@@ -144,17 +148,12 @@ export const channelProcedure = organizationProcedure.input(z.object({ channelSl
         canManageAssignedSelf = true
     }
 
-    if (!result) {
-        throw new TRPCError({
-            code: 'NOT_FOUND',
-            message: 'Channel not found',
-        })
-    }
-
     return next({
         ctx: {
             ...ctx,
-            channel: { ...result, canCreateNew, canViewAll, canCommentOnAll, canManageAll, canManageAssignedSelf, canFullAdmin },
+            channel: result
+                ? { ...result, canCreateNew, canViewAll, canCommentOnAll, canManageAll, canManageAssignedSelf, canFullAdmin }
+                : null,
         },
     })
 })

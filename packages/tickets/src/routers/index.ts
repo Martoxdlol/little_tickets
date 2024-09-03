@@ -14,6 +14,13 @@ export const tickets = router({
             }),
         )
         .mutation(async ({ ctx, input }) => {
+            if (!ctx.channel) {
+                throw new TRPCError({
+                    code: 'NOT_FOUND',
+                    message: 'Channel not found',
+                })
+            }
+
             if (!ctx.channel.canCreateNew) {
                 throw new TRPCError({
                     code: 'FORBIDDEN',
@@ -49,6 +56,10 @@ export const tickets = router({
         }),
 
     get: channelProcedure.input(z.object({ code: z.number() })).query(async ({ ctx, input }) => {
+        if (!ctx.channel) {
+            return null
+        }
+
         return (
             ctx.db.query.tickets.findFirst({
                 where: and(eq(schema.tickets.channelId, ctx.channel.id), eq(schema.tickets.code, input.code)),
@@ -57,6 +68,10 @@ export const tickets = router({
     }),
 
     list: channelProcedure.query(async ({ ctx }) => {
+        if (!ctx.channel) {
+            return null
+        }
+
         return ctx.db.query.tickets.findMany({
             where: and(eq(schema.tickets.channelId, ctx.channel.id)),
         })
