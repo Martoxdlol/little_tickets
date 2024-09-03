@@ -1,6 +1,7 @@
 import { Outlet, createBrowserRouter, redirect } from 'react-router-dom'
 import { OrganizationLayout } from '../organizations/layout'
 import PageLayout from '../scaffolding/page-layout'
+import { ErrorScreen } from '../screens/error'
 import { HomeScreen } from '../screens/home'
 import { ChannelScreen } from '../screens/org/channel'
 import { OrgHome } from '../screens/org/home'
@@ -22,6 +23,7 @@ export const router = createBrowserRouter([
                 <Outlet />
             </OrganizationLayout>
         ),
+        errorElement: <ErrorScreen />,
         children: [
             {
                 path: '',

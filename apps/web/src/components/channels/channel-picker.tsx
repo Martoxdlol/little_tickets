@@ -21,6 +21,7 @@ export function ChannelPicker(
                 label: channel.name,
                 value: channel.slug,
             }))}
+            allowEmpty={false}
             {...props}
         >
             {props.children}
