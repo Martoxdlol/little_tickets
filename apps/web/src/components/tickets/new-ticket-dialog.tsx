@@ -3,7 +3,7 @@
 import { api } from 'api/react'
 import { useString } from 'i18n/react'
 import type { SerializedEditorState } from 'lexical'
-import { CheckIcon, ChevronRightIcon } from 'lucide-react'
+import { CheckIcon, ChevronRightIcon, Loader2Icon } from 'lucide-react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useChannelSlug, useOrgSlug } from '~/hooks'
@@ -26,7 +26,9 @@ export function NewTicketModal(props: { children: React.ReactNode }) {
     const [value, setValue] = useState<SerializedEditorState>()
     const [channelSlug, setChannelSlug] = useState<string>()
 
-    const { mutateAsync: createTicket } = api.tickets.create.useMutation()
+    const [open, setOpen] = useState(false)
+
+    const { mutateAsync: createTicket, isPending } = api.tickets.create.useMutation()
 
     const urlChannelSlug = useChannelSlug()!
     const orgSlug = useOrgSlug()!
@@ -44,11 +46,14 @@ export function NewTicketModal(props: { children: React.ReactNode }) {
             description: value,
         }).then((r) => {
             navigate(`/orgs/${orgSlug}/c/${channelSlug || urlChannelSlug}/t/${r.code}`)
+            setOpen(false)
+            setTitle('')
+            setValue(undefined)
         })
     }
 
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={(open) => setOpen(open)}>
             <DialogTrigger asChild>{props.children}</DialogTrigger>
             <DialogContent className='block h-full w-full max-w-[650px] gap-0 border-0 p-0 sm:h-auto sm:border'>
                 <div className='flex flex-col p-4 pb-2'>
@@ -85,7 +90,11 @@ export function NewTicketModal(props: { children: React.ReactNode }) {
 
                 <div className='sm:bg-content absolute bottom-[36px] left-0 right-0 flex justify-between rounded-b-md border-t bg-background px-4 pb-3 pt-2 sm:static sm:pb-2'>
                     <div />
-                    <SmallIconButton disabled={!title} onClick={handleCreateTicket} icon={<CheckIcon />}>
+                    <SmallIconButton
+                        disabled={!title || isPending}
+                        onClick={handleCreateTicket}
+                        icon={isPending ? <Loader2Icon className='animate-spin' /> : <CheckIcon />}
+                    >
                         Create ticket
                     </SmallIconButton>
                 </div>

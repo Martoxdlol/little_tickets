@@ -4,7 +4,7 @@ import Center from '../scaffolding/center'
 export function AuthLoadingScreen() {
     return (
         <Center>
-            <Loader2Icon className='animate-spin' size={64} />
+            <Loader2Icon className='animate-spin' size={32} />
         </Center>
     )
 }

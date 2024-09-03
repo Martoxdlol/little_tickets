@@ -20,7 +20,7 @@ export function TicketScreen() {
     if (query.isPending) {
         return (
             <Center>
-                <Loader2Icon size={64} className='animate-spin' />
+                <Loader2Icon size={32} className='animate-spin' />
             </Center>
         )
     }
