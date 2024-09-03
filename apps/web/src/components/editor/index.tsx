@@ -56,6 +56,8 @@ export function Editor(props: {
     onChange: (editorState: SerializedEditorState) => void
     initialValue?: SerializedEditorState
     toolbarClassName?: string
+    disabled?: boolean
+    toolbarHidden?: boolean
 }) {
     const initialConfig = {
         namespace: 'MyEditor',
@@ -86,7 +88,7 @@ export function Editor(props: {
         >
             <div className='relative'>
                 <RichTextPlugin
-                    contentEditable={<ContentEditable className={cn('outline-none', props.contentClassName)} />}
+                    contentEditable={<ContentEditable className={cn('outline-none', props.contentClassName)} contentEditable={false} />}
                     ErrorBoundary={LexicalErrorBoundary}
                     placeholder={<Placeholder>Add description...</Placeholder>}
                 />
@@ -97,8 +99,9 @@ export function Editor(props: {
             <CheckListPlugin />
             <AutoLinkPlugin matchers={MATCHERS} />
             <MarkdownShortcutPlugin transformers={EDITOR_TRANSFORMERS} />
-            <Toolbar className={props.toolbarClassName} />
+            {!props.toolbarHidden && <Toolbar className={props.toolbarClassName} />}
             <EditorValue onChange={props.onChange} initialValue={props.initialValue} />
+            <EditablePlugin enabled={!props.disabled} initialValue={props.initialValue} />
         </LexicalComposer>
     )
 }
@@ -139,6 +142,26 @@ function EditorValue(props: {
             initialValueSetRef.current = true
         })
     }, [editor, props])
+
+    return null
+}
+
+function EditablePlugin(props: { enabled: boolean; initialValue?: SerializedEditorState }) {
+    const [editor] = useLexicalComposerContext()
+
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+    useEffect(() => {
+        editor.update(() => {
+            editor.setEditable(props.enabled)
+
+            if (!props.initialValue) {
+                return
+            }
+
+            const editorState = editor.parseEditorState(props.initialValue)
+            editor.setEditorState(editorState)
+        })
+    }, [editor, props.enabled])
 
     return null
 }

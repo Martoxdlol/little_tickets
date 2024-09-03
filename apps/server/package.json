@@ -3,7 +3,7 @@
     "module": "src/index.ts",
     "type": "module",
     "scripts": {
-        "dev": "bun --watch src/index.ts",
+        "dev": "NODE_ENV=development bun --watch src/index.ts",
         "build": "bun build src/index.ts --target=node --outfile dist/server.js --define process.env.NODE_ENV=\"'production'\""
     },
     "devDependencies": {
