@@ -43,7 +43,7 @@ export function NewTicketModal(props: { children: React.ReactNode }) {
             title: title,
             description: value,
         }).then((r) => {
-            navigate(`/orgs/${orgSlug}/t/${r.code}`)
+            navigate(`/orgs/${orgSlug}/c/${channelSlug || urlChannelSlug}/t/${r.code}`)
         })
     }
 

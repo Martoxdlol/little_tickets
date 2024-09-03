@@ -19,7 +19,7 @@ export function OrgHome() {
         <>
             {channels?.map((channel) => (
                 <Section key={channel.id}>
-                    <Link to={`/orgs/${organization}/${channel.slug}`} className='block hover:underline'>
+                    <Link to={`/orgs/${organization}/c/${channel.slug}`} className='block hover:underline'>
                         <Title>{channel.name}</Title>
                     </Link>
                     <div className='relative h-24 rounded-md border border-dashed border-black/25 dark:border-white/25'>

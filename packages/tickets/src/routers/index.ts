@@ -1,4 +1,6 @@
 import { TRPCError, channelProcedure, router } from 'api-helpers'
+import { schema } from 'database'
+import { and, eq } from 'drizzle-orm'
 import { wait } from 'shared-utils/helpers'
 import { z } from 'zod'
 import { insertTicket } from '../services'
@@ -45,4 +47,18 @@ export const tickets = router({
                 message: 'Failed to create ticket',
             })
         }),
+
+    get: channelProcedure.input(z.object({ code: z.number() })).query(async ({ ctx, input }) => {
+        return (
+            ctx.db.query.tickets.findFirst({
+                where: and(eq(schema.tickets.channelId, ctx.channel.id), eq(schema.tickets.code, input.code)),
+            }) ?? null
+        )
+    }),
+
+    list: channelProcedure.query(async ({ ctx }) => {
+        return ctx.db.query.tickets.findMany({
+            where: and(eq(schema.tickets.channelId, ctx.channel.id)),
+        })
+    }),
 })

@@ -7,3 +7,7 @@ export function useOrgSlug() {
 export function useChannelSlug() {
     return useParams().channel
 }
+
+export function useTicketCode() {
+    return useParams().ticket
+}

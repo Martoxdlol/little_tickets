@@ -4,6 +4,7 @@ import PageLayout from '../scaffolding/page-layout'
 import { HomeScreen } from '../screens/home'
 import { ChannelScreen } from '../screens/org/channel'
 import { OrgHome } from '../screens/org/home'
+import { TicketScreen } from '../screens/org/ticket'
 
 export const router = createBrowserRouter([
     {
@@ -33,6 +34,10 @@ export const router = createBrowserRouter([
             {
                 path: 'c/:channel',
                 element: <ChannelScreen />,
+            },
+            {
+                path: 'c/:channel/t/:ticket',
+                element: <TicketScreen />,
             },
         ],
     },
