@@ -25,7 +25,9 @@ export function HomeScreen() {
         if (orgs) {
             const lastOrg = localStorage.getItem('last-org')
             const org = orgs.find((org) => org.slug === lastOrg) ?? orgs[0]
-            navigate(`/orgs/${org!.slug}`)
+            if (org) {
+                navigate(`/orgs/${org.slug}`)
+            }
         }
     }, [orgs, navigate])
 
