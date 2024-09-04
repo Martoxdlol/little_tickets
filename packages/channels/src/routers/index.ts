@@ -1,4 +1,4 @@
-import { TRPCError, organizationProcedure, router } from 'api-helpers'
+import { TRPCError, channelProcedure, organizationProcedure, router } from 'api-helpers'
 import { schema } from 'database'
 import { slugSchema, useFirstBoolean } from 'shared-utils/helpers'
 import { z } from 'zod'
@@ -74,4 +74,8 @@ export const channels = router({
                 ...member,
             }))
         }),
+
+    get: channelProcedure.query(async ({ ctx }) => {
+        return ctx.channel
+    }),
 })
