@@ -127,7 +127,7 @@ export function Editor(props: {
             )}
             <EditorValue onChange={props.onChange} initialValue={props.initialValue} />
             <EditablePlugin enabled={!props.disabled} initialValue={props.initialValue} />
-            <ValueUpdaterPlugin value={props.value} />
+            <ValueUpdaterPlugin value={props.disabled ? props.value ?? props.initialValue : props.value} />
         </LexicalComposer>
     )
 }

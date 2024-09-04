@@ -47,12 +47,28 @@ export function TicketScreen() {
         return null
     }
 
-    const { title, description } = query.data
+    const { title, description, code } = query.data
 
-    return <TicketScreenContent title={title} description={description} />
+    return (
+        <TicketScreenContent
+            title={title}
+            description={description}
+            code={code}
+            channelSlug={channelSlug}
+            organizationSlug={orgId}
+            refetch={query.refetch}
+        />
+    )
 }
 
-function TicketScreenContent(props: { title: string; description: unknown }) {
+function TicketScreenContent(props: {
+    title: string
+    description: unknown
+    code: number
+    channelSlug: string
+    organizationSlug: string
+    refetch: () => void
+}) {
     const [editMode, setEditMode] = useState(false)
 
     const [title, setTitle] = useState(props.title)
@@ -68,12 +84,32 @@ function TicketScreenContent(props: { title: string; description: unknown }) {
         setEditMode(false)
     }
 
+    const updateTicket = api.tickets.update.useMutation()
+
     const editStr = useString('edit')
     const saveStr = useString('save')
     const cancelStr = useString('cancel')
     const leaveCommentStr = useString('leaveComment')
     const addDescriptionStr = useString('addDescription')
     const ticketTitle = useString('ticketTitle')
+
+    function handleSave() {
+        updateTicket
+            .mutateAsync({
+                organizationSlug: props.organizationSlug,
+                channelSlug: props.channelSlug,
+                code: props.code,
+                title: title,
+                description: value,
+            })
+            .catch((err) => {
+                console.error(err)
+            })
+            .finally(() => {
+                setEditMode(false)
+                props.refetch()
+            })
+    }
 
     return (
         <PageLayout>
@@ -83,7 +119,9 @@ function TicketScreenContent(props: { title: string; description: unknown }) {
                     editMode ? (
                         <>
                             <ChipButton onClick={handleDisableEditMode}>{cancelStr}</ChipButton>
-                            <ChipButton className='bg-primary text-primary-foreground'>{saveStr}</ChipButton>
+                            <ChipButton className='bg-primary text-primary-foreground' onClick={handleSave}>
+                                {saveStr}
+                            </ChipButton>
                         </>
                     ) : (
                         <ChipButton className='w-16' onClick={handleEnableEditMode}>
@@ -93,13 +131,15 @@ function TicketScreenContent(props: { title: string; description: unknown }) {
                 }
             >
                 {!editMode && <Title>{props.title}</Title>}
-                {editMode && <FlatInput className='text-lg' placeholder={ticketTitle} value={title} />}
+                {editMode && (
+                    <FlatInput className='text-lg' placeholder={ticketTitle} value={title} onChange={(e) => setTitle(e.target.value)} />
+                )}
                 <Editor
                     toolbarClassName='border border rounded-lg mt-2 sticky bottom-2'
                     disabled={!editMode}
                     // biome-ignore lint/suspicious/noExplicitAny: <explanation>
                     initialValue={(editMode ? value : props.description) as any}
-                    onChange={() => {}}
+                    onChange={(value) => setValue(value)}
                     toolbarHidden={!editMode}
                     placeholder={`${addDescriptionStr}...`}
                 />

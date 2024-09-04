@@ -67,6 +67,47 @@ export const tickets = router({
         )
     }),
 
+    update: channelProcedure
+        .input(z.object({ code: z.number(), title: z.string().min(1).max(255), description: z.unknown() }))
+        .mutation(async ({ ctx, input }) => {
+            if (!ctx.channel) {
+                throw new TRPCError({
+                    code: 'NOT_FOUND',
+                    message: 'Channel not found',
+                })
+            }
+
+            const ticket = await ctx.db.query.tickets.findFirst({
+                where: and(eq(schema.tickets.channelId, ctx.channel.id), eq(schema.tickets.code, input.code)),
+            })
+
+            if (!ticket) {
+                throw new TRPCError({
+                    code: 'NOT_FOUND',
+                    message: 'Ticket not found',
+                })
+            }
+
+            const isSelf = ticket.createdByUserId === ctx.session.userId
+            const canEdit = isSelf || ctx.channel.canManageAll
+
+            if (!canEdit) {
+                throw new TRPCError({
+                    code: 'FORBIDDEN',
+                    message: 'You do not have permission to update this ticket',
+                })
+            }
+
+            await ctx.db
+                .update(schema.tickets)
+                .set({
+                    title: input.title,
+                    description: input.description,
+                    version: ticket.version + 1,
+                })
+                .where(and(eq(schema.tickets.id, ticket.id), eq(schema.tickets.version, ticket.version)))
+        }),
+
     list: channelProcedure.query(async ({ ctx }) => {
         if (!ctx.channel) {
             return null
