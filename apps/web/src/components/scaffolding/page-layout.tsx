@@ -14,8 +14,7 @@ export default function PageLayout({
                 {
                     'flex flex-col': !twoColumn,
                     'grid grid-cols-1 md:grid-cols-2': twoColumn,
-                    'sm:mx-auto sm:w-full sm:max-w-[90%] lg:max-w-[80%] xl:max-w-[75%]':
-                        centered,
+                    'sm:mx-auto sm:w-full sm:max-w-[90%] lg:max-w-[80%] xl:max-w-[75%]': centered,
                 },
                 props.className,
             )}

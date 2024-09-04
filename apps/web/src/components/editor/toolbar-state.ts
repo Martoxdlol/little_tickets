@@ -1,24 +1,9 @@
 import { $createCodeNode } from '@lexical/code'
 import { $isLinkNode } from '@lexical/link'
-import {
-    $isListNode,
-    INSERT_CHECK_LIST_COMMAND,
-    INSERT_ORDERED_LIST_COMMAND,
-    INSERT_UNORDERED_LIST_COMMAND,
-    ListNode,
-} from '@lexical/list'
+import { $isListNode, INSERT_CHECK_LIST_COMMAND, INSERT_ORDERED_LIST_COMMAND, INSERT_UNORDERED_LIST_COMMAND, ListNode } from '@lexical/list'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
-import {
-    $createHeadingNode,
-    $createQuoteNode,
-    $isHeadingNode,
-    type HeadingTagType,
-} from '@lexical/rich-text'
-import {
-    $isAtNodeEnd,
-    $isParentElementRTL,
-    $setBlocksType,
-} from '@lexical/selection'
+import { $createHeadingNode, $createQuoteNode, $isHeadingNode, type HeadingTagType } from '@lexical/rich-text'
+import { $isAtNodeEnd, $isParentElementRTL, $setBlocksType } from '@lexical/selection'
 import { $getNearestNodeOfType, mergeRegister } from '@lexical/utils'
 import {
     $createParagraphNode,
@@ -27,14 +12,14 @@ import {
     CAN_REDO_COMMAND,
     CAN_UNDO_COMMAND,
     COMMAND_PRIORITY_CRITICAL,
-    FORMAT_TEXT_COMMAND,
-    REDO_COMMAND,
-    SELECTION_CHANGE_COMMAND,
-    UNDO_COMMAND,
     type ElementNode,
+    FORMAT_TEXT_COMMAND,
     type NodeKey,
+    REDO_COMMAND,
     type RangeSelection,
+    SELECTION_CHANGE_COMMAND,
     type TextNode,
+    UNDO_COMMAND,
 } from 'lexical'
 import { useCallback, useEffect, useState } from 'react'
 
@@ -56,10 +41,8 @@ const blockTypeToBlockName = {
 export function useToolbarState() {
     const [editor] = useLexicalComposerContext()
     const [activeEditor, setActiveEditor] = useState(editor)
-    const [blockType, setBlockType] =
-        useState<keyof typeof blockTypeToBlockName>('paragraph')
-    const [selectedElementKey, setSelectedElementKey] =
-        useState<NodeKey | null>(null)
+    const [blockType, setBlockType] = useState<keyof typeof blockTypeToBlockName>('paragraph')
+    const [selectedElementKey, setSelectedElementKey] = useState<NodeKey | null>(null)
     const [isLink, setIsLink] = useState(false)
     const [isBold, setIsBold] = useState(false)
     const [isItalic, setIsItalic] = useState(false)
@@ -86,10 +69,7 @@ export function useToolbarState() {
         const selection = $getSelection()
         if ($isRangeSelection(selection)) {
             const anchorNode = selection.anchor.getNode()
-            const element =
-                anchorNode.getKey() === 'root'
-                    ? anchorNode
-                    : anchorNode.getTopLevelElementOrThrow()
+            const element = anchorNode.getKey() === 'root' ? anchorNode : anchorNode.getTopLevelElementOrThrow()
             const elementKey = element.getKey()
             const elementDOM = activeEditor.getElementByKey(elementKey)
 
@@ -115,18 +95,11 @@ export function useToolbarState() {
             if (elementDOM !== null) {
                 setSelectedElementKey(elementKey)
                 if ($isListNode(element)) {
-                    const parentList = $getNearestNodeOfType<ListNode>(
-                        anchorNode,
-                        ListNode,
-                    )
-                    const type = parentList
-                        ? parentList.getListType()
-                        : element.getListType()
+                    const parentList = $getNearestNodeOfType<ListNode>(anchorNode, ListNode)
+                    const type = parentList ? parentList.getListType() : element.getListType()
                     setBlockType(type)
                 } else {
-                    const type = $isHeadingNode(element)
-                        ? element.getTag()
-                        : element.getType()
+                    const type = $isHeadingNode(element) ? element.getTag() : element.getType()
                     if (type in blockTypeToBlockName) {
                         setBlockType(type as keyof typeof blockTypeToBlockName)
                     }
@@ -135,9 +108,7 @@ export function useToolbarState() {
         }
     }, [activeEditor])
 
-    function getSelectedNode(
-        selection: RangeSelection,
-    ): TextNode | ElementNode {
+    function getSelectedNode(selection: RangeSelection): TextNode | ElementNode {
         const anchor = selection.anchor
         const focus = selection.focus
         const anchorNode = selection.anchor.getNode()
@@ -148,9 +119,8 @@ export function useToolbarState() {
         const isBackward = selection.isBackward()
         if (isBackward) {
             return $isAtNodeEnd(focus) ? anchorNode : focusNode
-        } else {
-            return $isAtNodeEnd(anchor) ? focusNode : anchorNode
         }
+        return $isAtNodeEnd(anchor) ? focusNode : anchorNode
     }
 
     useEffect(() => {

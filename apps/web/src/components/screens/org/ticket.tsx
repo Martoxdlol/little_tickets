@@ -1,6 +1,5 @@
-import { api } from 'api/react'
+import { type RouterOutputs, api } from 'api/react'
 import { useString } from 'i18n/react'
-import { CheckIcon } from 'lucide-react'
 import { useState } from 'react'
 import { Editor } from '~/components/editor'
 import Center from '~/components/scaffolding/center'
@@ -8,7 +7,6 @@ import PageLayout from '~/components/scaffolding/page-layout'
 import { Section } from '~/components/scaffolding/section'
 import { ChipButton } from '~/components/ui/custom/chip-button'
 import { FlatInput } from '~/components/ui/custom/flat-input'
-import { SmallIconButton } from '~/components/ui/custom/icon-button'
 import { Title } from '~/components/ui/custom/title'
 import { useChannelSlug, useOrgSlug, useTicketCode } from '~/hooks'
 
@@ -47,37 +45,24 @@ export function TicketScreen() {
         return null
     }
 
-    const { title, description, code } = query.data
-
-    return (
-        <TicketScreenContent
-            title={title}
-            description={description}
-            code={code}
-            channelSlug={channelSlug}
-            organizationSlug={orgId}
-            refetch={query.refetch}
-        />
-    )
+    return <TicketScreenContent ticket={query.data} channelSlug={channelSlug} organizationSlug={orgId} refetch={query.refetch} />
 }
 
 function TicketScreenContent(props: {
-    title: string
-    description: unknown
-    code: number
+    ticket: NonNullable<RouterOutputs['tickets']['get']>
     channelSlug: string
     organizationSlug: string
-    refetch: () => void
+    refetch: () => Promise<unknown>
 }) {
     const [editMode, setEditMode] = useState(false)
 
-    const [title, setTitle] = useState(props.title)
-    const [value, setValue] = useState(props.description)
+    const [title, setTitle] = useState(props.ticket.title)
+    const [value, setValue] = useState(props.ticket.description)
 
     function handleEnableEditMode() {
         setEditMode(true)
-        setTitle(props.title)
-        setValue(props.description)
+        setTitle(props.ticket.title)
+        setValue(props.ticket.description)
     }
 
     function handleDisableEditMode() {
@@ -89,7 +74,6 @@ function TicketScreenContent(props: {
     const editStr = useString('edit')
     const saveStr = useString('save')
     const cancelStr = useString('cancel')
-    const leaveCommentStr = useString('leaveComment')
     const addDescriptionStr = useString('addDescription')
     const ticketTitle = useString('ticketTitle')
 
@@ -98,16 +82,16 @@ function TicketScreenContent(props: {
             .mutateAsync({
                 organizationSlug: props.organizationSlug,
                 channelSlug: props.channelSlug,
-                code: props.code,
+                code: props.ticket.code,
                 title: title,
                 description: value,
             })
             .catch((err) => {
                 console.error(err)
             })
-            .finally(() => {
+            .finally(async () => {
+                await props.refetch()
                 setEditMode(false)
-                props.refetch()
             })
     }
 
@@ -118,27 +102,29 @@ function TicketScreenContent(props: {
                 actions={
                     editMode ? (
                         <>
-                            <ChipButton onClick={handleDisableEditMode}>{cancelStr}</ChipButton>
+                            <ChipButton className='w-16 bg-background dark:bg-secondary' onClick={handleDisableEditMode}>
+                                {cancelStr}
+                            </ChipButton>
                             <ChipButton className='bg-primary text-primary-foreground' onClick={handleSave}>
                                 {saveStr}
                             </ChipButton>
                         </>
                     ) : (
-                        <ChipButton className='w-16' onClick={handleEnableEditMode}>
+                        <ChipButton className='w-16 bg-background dark:bg-secondary' onClick={handleEnableEditMode}>
                             {editStr}
                         </ChipButton>
                     )
                 }
             >
-                {!editMode && <Title>{props.title}</Title>}
+                {!editMode && <Title>{props.ticket.title}</Title>}
                 {editMode && (
                     <FlatInput className='text-lg' placeholder={ticketTitle} value={title} onChange={(e) => setTitle(e.target.value)} />
                 )}
                 <Editor
-                    toolbarClassName='border border rounded-lg mt-2 sticky bottom-2'
+                    toolbarClassName='border border rounded-lg mt-2 sticky bottom-2 bg-background'
                     disabled={!editMode}
                     // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-                    initialValue={(editMode ? value : props.description) as any}
+                    initialValue={(editMode ? value : props.ticket.description) as any}
                     onChange={(value) => setValue(value)}
                     toolbarHidden={!editMode}
                     placeholder={`${addDescriptionStr}...`}
@@ -146,12 +132,6 @@ function TicketScreenContent(props: {
             </Section>
             <Section className='lg:mx-[10%] 2xl:mx-[15%]'>
                 <Title className='text-md opacity-secondary'>Activity</Title>
-                <div className='flex flex-col gap-2 bg-secondary border border-primary/5 rounded-lg p-2 relative'>
-                    <Editor toolbarHidden placeholder={leaveCommentStr} toolbarClassName='bottom-[-35px]' />
-                    <div className='flex items-center justify-end'>
-                        <SmallIconButton icon={<CheckIcon />}>Comment</SmallIconButton>
-                    </div>
-                </div>
             </Section>
         </PageLayout>
     )

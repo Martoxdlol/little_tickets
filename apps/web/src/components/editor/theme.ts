@@ -93,8 +93,7 @@ const theme: EditorThemeClasses = {
     table: 'LexicalEditorLink__table',
     tableCell: 'LexicalEditorLink__tableCell',
     tableCellActionButton: 'LexicalEditorLink__tableCellActionButton',
-    tableCellActionButtonContainer:
-        'LexicalEditorLink__tableCellActionButtonContainer',
+    tableCellActionButtonContainer: 'LexicalEditorLink__tableCellActionButtonContainer',
     tableCellEditing: 'LexicalEditorLink__tableCellEditing',
     tableCellHeader: 'LexicalEditorLink__tableCellHeader',
     tableCellPrimarySelected: 'LexicalEditorLink__tableCellPrimarySelected',

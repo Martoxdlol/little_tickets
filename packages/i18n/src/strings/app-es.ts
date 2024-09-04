@@ -23,4 +23,6 @@ export const appStringsSpanish: Record<AppStringsKeys, string | null> = {
     leaveComment: 'Dejar un comentario',
     addDescription: 'Agregar descripción',
     ticketTitle: 'Título del ticket',
+    saveComment: 'Comentar',
+    comment: 'Comentario',
 }

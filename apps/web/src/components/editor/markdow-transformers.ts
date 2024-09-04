@@ -14,12 +14,8 @@ import {
     TEXT_MATCH_TRANSFORMERS,
     type Transformer,
 } from '@lexical/markdown'
-import {
-    $createHorizontalRuleNode,
-    $isHorizontalRuleNode,
-    HorizontalRuleNode,
-} from '@lexical/react/LexicalHorizontalRuleNode'
-import { type LexicalNode } from 'lexical'
+import { $createHorizontalRuleNode, $isHorizontalRuleNode, HorizontalRuleNode } from '@lexical/react/LexicalHorizontalRuleNode'
+import type { LexicalNode } from 'lexical'
 
 export const HR: ElementTransformer = {
     dependencies: [HorizontalRuleNode],

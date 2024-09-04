@@ -1,10 +1,10 @@
+import { join, resolve } from 'node:path'
 import { serveStatic } from '@hono/node-server/serve-static'
 import { handler } from 'api/server'
 import { auth } from 'auth-helpers/hono-apps'
 import { lucia } from 'auth-helpers/services'
 import { Hono } from 'hono'
 import { getCookie } from 'hono/cookie'
-import { join, resolve } from 'node:path'
 
 const app = new Hono()
     .use('/api/trpc/*', async (c) => {

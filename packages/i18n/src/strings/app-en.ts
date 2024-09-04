@@ -21,4 +21,6 @@ export const appStringsEnglish = {
     leaveComment: 'Leave a comment',
     addDescription: 'Add description',
     ticketTitle: 'Ticket title',
+    saveComment: 'Comment',
+    comment: 'Comment',
 } as const
