@@ -36,3 +36,16 @@ export function nameToSlug(name: string) {
 }
 
 export const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+
+export function getNameTwoInitialsSafe(name: string) {
+    const parts = name.split(' ')
+    if (parts.length === 1) {
+        return parts[0]!.slice(0, 2).toUpperCase()
+    }
+
+    return parts
+        .slice(0, 2)
+        .map((part) => part[0])
+        .join('')
+        .toUpperCase()
+}

@@ -57,7 +57,6 @@ export function Editor(props: {
     contentClassName?: string
     onChange?: (editorState: SerializedEditorState) => void
     initialValue?: SerializedEditorState
-    value?: SerializedEditorState
     toolbarClassName?: string
     placeholderClassName?: string
     disabled?: boolean
@@ -127,7 +126,6 @@ export function Editor(props: {
             )}
             <EditorValue onChange={props.onChange} initialValue={props.initialValue} />
             <EditablePlugin enabled={!props.disabled} initialValue={props.initialValue} />
-            <ValueUpdaterPlugin value={props.disabled ? props.value ?? props.initialValue : props.value} />
         </LexicalComposer>
     )
 }
@@ -168,23 +166,6 @@ function EditorValue(props: {
             initialValueSetRef.current = true
         })
     }, [editor, props])
-
-    return null
-}
-
-function ValueUpdaterPlugin(props: { value?: SerializedEditorState }) {
-    const [editor] = useLexicalComposerContext()
-
-    useEffect(() => {
-        editor.update(() => {
-            if (!props.value) {
-                return
-            }
-
-            const editorState = editor.parseEditorState(props.value)
-            editor.setEditorState(editorState)
-        })
-    }, [editor, props.value])
 
     return null
 }

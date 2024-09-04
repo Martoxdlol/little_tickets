@@ -17,18 +17,15 @@ import {
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
 } from '~/components/ui/dropdown-menu'
+import { UserAvatar } from '../auth/user-avatar'
 import { type Theme, useTheme } from '../themes/theme-provider'
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 
-export function UserAvatar() {
+export function CurrentUserAvatar() {
     const session = useSession()
 
     return (
         <UserDropDown>
-            <Avatar className='size-7'>
-                {session!.user.picture && <AvatarImage src={session!.user.picture} alt={session!.user.name} />}
-                <AvatarFallback>{getNameTwoInitialsSafe(session!.user.name)}</AvatarFallback>
-            </Avatar>
+            <UserAvatar name={session?.user.name} picture={session?.user.picture} />
         </UserDropDown>
     )
 }
@@ -98,17 +95,4 @@ export function UserDropDown(props: { children: React.ReactNode }) {
             </DropdownMenuContent>
         </DropdownMenu>
     )
-}
-
-function getNameTwoInitialsSafe(name: string) {
-    const parts = name.split(' ')
-    if (parts.length === 1) {
-        return parts[0]!.slice(0, 2).toUpperCase()
-    }
-
-    return parts
-        .slice(0, 2)
-        .map((part) => part[0])
-        .join('')
-        .toUpperCase()
 }

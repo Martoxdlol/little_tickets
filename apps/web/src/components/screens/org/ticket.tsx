@@ -5,6 +5,7 @@ import { Editor } from '~/components/editor'
 import Center from '~/components/scaffolding/center'
 import PageLayout from '~/components/scaffolding/page-layout'
 import { Section } from '~/components/scaffolding/section'
+import { CommentCard, LeaveCommentCard } from '~/components/tickets/comment'
 import { ChipButton } from '~/components/ui/custom/chip-button'
 import { FlatInput } from '~/components/ui/custom/flat-input'
 import { Title } from '~/components/ui/custom/title'
@@ -95,6 +96,14 @@ function TicketScreenContent(props: {
             })
     }
 
+    const comments = api.comments.list.useQuery({
+        channelSlug: props.channelSlug,
+        organizationSlug: props.organizationSlug,
+        ticketCode: props.ticket.code,
+    })
+
+    console.log(comments.data)
+
     return (
         <PageLayout>
             <Section
@@ -132,6 +141,10 @@ function TicketScreenContent(props: {
             </Section>
             <Section className='lg:mx-[10%] 2xl:mx-[15%]'>
                 <Title className='text-md opacity-secondary'>Activity</Title>
+                {comments.data?.map((comment) => (
+                    <CommentCard comment={comment} channelSlug={props.channelSlug} organizationSlug={props.organizationSlug} />
+                ))}
+                <LeaveCommentCard channelSlug={props.channelSlug} orgSlug={props.organizationSlug} ticketCode={props.ticket.code} />
             </Section>
         </PageLayout>
     )

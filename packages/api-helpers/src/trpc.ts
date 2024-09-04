@@ -60,8 +60,11 @@ export const optionalOrganizationProcedure = protectedProcedure
                 defaultChannelAllowCreateNew: schema.organizations.defaultChannelAllowCreateNew,
                 defaultChannelAllowViewAll: schema.organizations.defaultChannelAllowViewAll,
                 defaultChannelAllowCommentOnAll: schema.organizations.defaultChannelAllowCommentOnAll,
+                defaultChannelAllowCommentCreatedSelf: schema.organizations.defaultChannelAllowCommentCreatedSelf,
+                defaultChannelAllowCommentAssignedSelf: schema.organizations.defaultChannelAllowCommentAssignedSelf,
                 defaultChannelAllowManageAll: schema.organizations.defaultChannelAllowManageAll,
                 defaultChannelAllowManageAssignedSelf: schema.organizations.defaultChannelAllowManageAssignedSelf,
+                defaultChannelAllowManageCreatedSelf: schema.organizations.defaultChannelAllowManageCreatedSelf,
                 defaultChannelAllowFullAdmin: schema.organizations.defaultChannelAllowFullAdmin,
             })
             .from(schema.organizations)
@@ -108,13 +111,19 @@ export const channelProcedure = organizationProcedure.input(z.object({ channelSl
             allowCreateNew: schema.channelMembers.allowCreateNew,
             allowViewAll: schema.channelMembers.allowViewAll,
             allowCommentOnAll: schema.channelMembers.allowCommentOnAll,
+            allowCommentCreatedSelf: schema.channelMembers.allowCommentCreatedSelf,
+            allowCommentAssignedSelf: schema.channelMembers.allowCommentAssignedSelf,
             allowManageAll: schema.channelMembers.allowManageAll,
+            allowManageCreatedSelf: schema.channelMembers.allowManageCreatedSelf,
             allowManageAssignedSelf: schema.channelMembers.allowManageAssignedSelf,
             allowFullAdmin: schema.channelMembers.allowFullAdmin,
             defaultAllowCreateNew: schema.channels.defaultAllowCreateNew,
             defaultAllowViewAll: schema.channels.defaultAllowViewAll,
             defaultAllowCommentOnAll: schema.channels.defaultAllowCommentOnAll,
+            defaultAllowCommentCreatedSelf: schema.channels.defaultAllowCommentCreatedSelf,
+            defaultAllowCommentAssignedSelf: schema.channels.defaultAllowCommentAssignedSelf,
             defaultAllowManageAll: schema.channels.defaultAllowManageAll,
+            defaultAllowManageCreatedSelf: schema.channels.defaultAllowManageCreatedSelf,
             defaultAllowManageAssignedSelf: schema.channels.defaultAllowManageAssignedSelf,
             defaultAllowFullAdmin: schema.channels.defaultAllowFullAdmin,
         })
@@ -138,7 +147,22 @@ export const channelProcedure = organizationProcedure.input(z.object({ channelSl
         result?.defaultAllowCommentOnAll,
         ctx.organization.defaultChannelAllowCommentOnAll,
     )
+    let canCommentOnCreatedSelf = useFirstBoolean(
+        result?.allowCommentCreatedSelf,
+        result?.defaultAllowCommentCreatedSelf,
+        ctx.organization.defaultChannelAllowCommentCreatedSelf,
+    )
+    let canCommentOnAssignedSelf = useFirstBoolean(
+        result?.allowCommentAssignedSelf,
+        result?.defaultAllowCommentAssignedSelf,
+        ctx.organization.defaultChannelAllowCommentAssignedSelf,
+    )
     let canManageAll = useFirstBoolean(result?.allowManageAll, result?.defaultAllowManageAll, ctx.organization.defaultChannelAllowManageAll)
+    let canManageCreatedSelf = useFirstBoolean(
+        result?.allowManageCreatedSelf,
+        result?.defaultAllowManageCreatedSelf,
+        ctx.organization.defaultChannelAllowManageCreatedSelf,
+    )
     let canManageAssignedSelf = useFirstBoolean(
         result?.allowManageAssignedSelf,
         result?.defaultAllowManageAssignedSelf,
@@ -153,7 +177,11 @@ export const channelProcedure = organizationProcedure.input(z.object({ channelSl
         canCreateNew = true
         canViewAll = true
         canCommentOnAll = true
+        canCommentOnCreatedSelf = true
+        canCommentOnAssignedSelf = true
         canManageAll = true
+        canManageCreatedSelf = true
+        canManageAssignedSelf = true
         canManageAssignedSelf = true
     }
 

@@ -16,7 +16,10 @@ export const channels = createTable(
         defaultAllowCreateNew: boolean('default_allow_create_new'),
         defaultAllowViewAll: boolean('default_allow_view_all'),
         defaultAllowCommentOnAll: boolean('default_allow_comment_on_all'),
+        defaultAllowCommentCreatedSelf: boolean('default_allow_comment_created_self'),
+        defaultAllowCommentAssignedSelf: boolean('default_allow_comment_assigned_self'),
         defaultAllowManageAll: boolean('default_allow_manage_all'),
+        defaultAllowManageCreatedSelf: boolean('default_allow_manage_created_self'),
         defaultAllowManageAssignedSelf: boolean('default_allow_manage_assigned_self'),
         defaultAllowFullAdmin: boolean('default_allow_full_admin').default(false).notNull(),
 

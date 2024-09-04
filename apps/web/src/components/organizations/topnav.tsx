@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { useChannelSlug, useOrgSlug, useTicketCode } from '~/hooks'
 import Appbar from '../scaffolding/appbar'
 import { MobileSidenav } from '../scaffolding/mobile-sidenav'
-import { UserAvatar } from '../topnav/user-dropdown'
+import { CurrentUserAvatar } from '../topnav/user-dropdown'
 import { ChipButton } from '../ui/custom/chip-button'
 import { OrganizationMenu } from './menu'
 
@@ -39,7 +39,7 @@ export function OrganizationTopnav() {
                     </Link>
                 )}
             </div>
-            <UserAvatar />
+            <CurrentUserAvatar />
         </Appbar>
     )
 }

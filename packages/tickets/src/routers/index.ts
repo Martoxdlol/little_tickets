@@ -118,3 +118,85 @@ export const tickets = router({
         })
     }),
 })
+
+export const comments = router({
+    create: channelProcedure.input(z.object({ ticketCode: z.number(), content: z.unknown() })).mutation(async ({ ctx, input }) => {
+        if (!ctx.channel) {
+            throw new TRPCError({
+                code: 'NOT_FOUND',
+                message: 'Channel not found',
+            })
+        }
+
+        const ticket = await ctx.db.query.tickets.findFirst({
+            where: and(eq(schema.tickets.channelId, ctx.channel.id), eq(schema.tickets.code, input.ticketCode)),
+            columns: {
+                id: true,
+                createdByUserId: true,
+                assignedToUserId: true,
+            },
+        })
+
+        if (!ticket) {
+            throw new TRPCError({
+                code: 'NOT_FOUND',
+                message: 'Ticket not found',
+            })
+        }
+        const canComment =
+            ctx.channel.canCommentOnAll ||
+            ctx.channel.canManageAll ||
+            ticket.createdByUserId === ctx.session.userId ||
+            ticket.assignedToUserId === ctx.session.userId
+
+        if (!canComment) {
+            throw new TRPCError({
+                code: 'FORBIDDEN',
+                message: 'You do not have permission to comment on this ticket',
+            })
+        }
+
+        return await ctx.db.insert(schema.comments).values({
+            content: input.content,
+            createdByUserId: ctx.session.userId,
+            ticketId: ticket.id,
+            organizationId: ctx.organization.id,
+        })
+    }),
+
+    list: channelProcedure.input(z.object({ ticketCode: z.number() })).query(async ({ ctx, input }) => {
+        if (!ctx.channel) {
+            return null
+        }
+
+        const ticket = await ctx.db.query.tickets.findFirst({
+            where: and(eq(schema.tickets.channelId, ctx.channel.id), eq(schema.tickets.code, input.ticketCode)),
+        })
+
+        if (!ticket) {
+            return null
+        }
+
+        return ctx.db.query.comments.findMany({
+            where: and(eq(schema.comments.ticketId, ticket.id), eq(schema.comments.organizationId, ctx.organization.id)),
+            with: {
+                user: {
+                    columns: {
+                        name: true,
+                        picture: true,
+                    },
+                },
+            },
+        })
+    }),
+
+    delete: channelProcedure.input(z.object({ commentId: z.string() })).mutation(async ({ ctx, input }) => {
+        if (!ctx.channel) {
+            return
+        }
+
+        await ctx.db
+            .delete(schema.comments)
+            .where(and(eq(schema.comments.id, input.commentId), eq(schema.comments.organizationId, ctx.organization.id)))
+    }),
+})
