@@ -17,4 +17,10 @@ export const appStringsSpanish: Record<AppStringsKeys, string | null> = {
     home: 'Inicio',
     newChannel: 'Nuevo canal',
     nothingHere: 'No hay nada aquí',
+    edit: 'Editar',
+    save: 'Guardar',
+    cancel: 'Cancelar',
+    leaveComment: 'Dejar un comentario',
+    addDescription: 'Agregar descripción',
+    ticketTitle: 'Título del ticket',
 }

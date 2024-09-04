@@ -1,10 +1,14 @@
 import { api } from 'api/react'
+import { useString } from 'i18n/react'
+import { CheckIcon } from 'lucide-react'
 import { useState } from 'react'
 import { Editor } from '~/components/editor'
 import Center from '~/components/scaffolding/center'
 import PageLayout from '~/components/scaffolding/page-layout'
 import { Section } from '~/components/scaffolding/section'
 import { ChipButton } from '~/components/ui/custom/chip-button'
+import { FlatInput } from '~/components/ui/custom/flat-input'
+import { SmallIconButton } from '~/components/ui/custom/icon-button'
 import { Title } from '~/components/ui/custom/title'
 import { useChannelSlug, useOrgSlug, useTicketCode } from '~/hooks'
 
@@ -64,35 +68,49 @@ function TicketScreenContent(props: { title: string; description: unknown }) {
         setEditMode(false)
     }
 
+    const editStr = useString('edit')
+    const saveStr = useString('save')
+    const cancelStr = useString('cancel')
+    const leaveCommentStr = useString('leaveComment')
+    const addDescriptionStr = useString('addDescription')
+    const ticketTitle = useString('ticketTitle')
+
     return (
         <PageLayout>
             <Section
                 className='lg:mx-[10%] 2xl:mx-[15%]'
                 actions={
-                    editMode && (
+                    editMode ? (
                         <>
-                            <ChipButton onClick={handleDisableEditMode}>Cancel</ChipButton>
-                            <ChipButton className='bg-primary text-primary-foreground'>Save</ChipButton>
+                            <ChipButton onClick={handleDisableEditMode}>{cancelStr}</ChipButton>
+                            <ChipButton className='bg-primary text-primary-foreground'>{saveStr}</ChipButton>
                         </>
+                    ) : (
+                        <ChipButton className='w-16' onClick={handleEnableEditMode}>
+                            {editStr}
+                        </ChipButton>
                     )
                 }
             >
                 {!editMode && <Title>{props.title}</Title>}
-                {editMode && <input className='text-lg bg-transparent text-primary outline-none focus:ring rounded-md' value={title} />}
+                {editMode && <FlatInput className='text-lg' placeholder={ticketTitle} value={title} />}
                 <Editor
-                    toolbarClassName='border border rounded-lg mt-2'
+                    toolbarClassName='border border rounded-lg mt-2 sticky bottom-2'
                     disabled={!editMode}
                     // biome-ignore lint/suspicious/noExplicitAny: <explanation>
                     initialValue={(editMode ? value : props.description) as any}
                     onChange={() => {}}
                     toolbarHidden={!editMode}
+                    placeholder={`${addDescriptionStr}...`}
                 />
-                <div>
-                    {!editMode && (
-                        <ChipButton className='mt-4' onClick={handleEnableEditMode}>
-                            Edit
-                        </ChipButton>
-                    )}
+            </Section>
+            <Section className='lg:mx-[10%] 2xl:mx-[15%]'>
+                <Title className='text-md opacity-secondary'>Activity</Title>
+                <div className='flex flex-col gap-2 bg-secondary border border-primary/5 rounded-lg p-2 relative'>
+                    <Editor toolbarHidden placeholder={leaveCommentStr} toolbarClassName='bottom-[-35px]' />
+                    <div className='flex items-center justify-end'>
+                        <SmallIconButton icon={<CheckIcon />}>Comment</SmallIconButton>
+                    </div>
                 </div>
             </Section>
         </PageLayout>

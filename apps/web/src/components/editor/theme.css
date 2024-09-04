@@ -19,6 +19,14 @@
     position: relative;
 }
 
+.EditorContentEditableDiv>.LexicalEditorLink__paragraph:first-child {
+    margin-top: 0;
+}
+
+.EditorContentEditableDiv>.LexicalEditorLink__paragraph:last-child {
+    margin-bottom: 0;
+}
+
 .LexicalEditorLink__quote {
     margin: 10px 0;
     font-size: 15px;

@@ -11,6 +11,7 @@ import { cn } from '~/lib/utils'
 import { ChipChannelPicker } from '../channels/channel-picker'
 import { Editor } from '../editor'
 import { ChipButton } from '../ui/custom/chip-button'
+import { FlatInput } from '../ui/custom/flat-input'
 import { SmallIconButton } from '../ui/custom/icon-button'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog'
 
@@ -52,6 +53,9 @@ export function NewTicketModal(props: { children: React.ReactNode }) {
         })
     }
 
+    const addDescription = useString('addDescription')
+    const ticketTitle = useString('ticketTitle')
+
     return (
         <Dialog open={open} onOpenChange={(open) => setOpen(open)}>
             <DialogTrigger asChild>{props.children}</DialogTrigger>
@@ -74,9 +78,9 @@ export function NewTicketModal(props: { children: React.ReactNode }) {
                         <ChevronRightIcon size={12} />
                         <ChipButton className='border-primary/20 text-primary/60 border-dashed bg-transparent'>subcategory</ChipButton>
                     </div>
-                    <input
-                        className='bg-transparent p-0 text-xl outline-0 placeholder:text-primary/30 placeholder:font-bold'
-                        placeholder='Title here...'
+                    <FlatInput
+                        className='text-xl placeholder:font-bold'
+                        placeholder={ticketTitle}
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                     />
@@ -85,6 +89,7 @@ export function NewTicketModal(props: { children: React.ReactNode }) {
                         onChange={(value) => setValue(value)}
                         contentClassName='h-[calc(var(--screen-height)_-_161px)] min-h-[min(calc(var(--screen-height)_-_200px),_110px)] sm:h-auto sm:max-h-[calc(var(--screen-height)_-_180px)] overflow-auto'
                         toolbarClassName={toolbarClassName}
+                        placeholder={`${addDescription}...`}
                     />
                 </div>
 

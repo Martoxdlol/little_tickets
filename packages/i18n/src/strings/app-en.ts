@@ -15,4 +15,10 @@ export const appStringsEnglish = {
     home: 'Home',
     newChannel: 'New channel',
     nothingHere: 'Nothing here',
+    edit: 'Edit',
+    save: 'Save',
+    cancel: 'Cancel',
+    leaveComment: 'Leave a comment',
+    addDescription: 'Add description',
+    ticketTitle: 'Ticket title',
 } as const

@@ -18,8 +18,10 @@ import { HorizontalRuleNode } from '@lexical/react/LexicalHorizontalRuleNode'
 import { HeadingNode, QuoteNode } from '@lexical/rich-text'
 import { TableCellNode, TableNode, TableRowNode } from '@lexical/table'
 import type { SerializedEditorState } from 'lexical'
-import { useEffect, useRef } from 'react'
+import { PencilRulerIcon } from 'lucide-react'
+import { type ReactNode, useEffect, useRef, useState } from 'react'
 import { cn } from '~/lib/utils'
+import { Button } from '../ui/button'
 import { EDITOR_TRANSFORMERS } from './markdow-transformers'
 import { Placeholder } from './placeholder'
 import theme from './theme'
@@ -53,17 +55,22 @@ function onError(error: unknown) {
 
 export function Editor(props: {
     contentClassName?: string
-    onChange: (editorState: SerializedEditorState) => void
+    onChange?: (editorState: SerializedEditorState) => void
     initialValue?: SerializedEditorState
+    value?: SerializedEditorState
     toolbarClassName?: string
+    placeholderClassName?: string
     disabled?: boolean
     toolbarHidden?: boolean
+    placeholder?: ReactNode
 }) {
     const initialConfig = {
         namespace: 'MyEditor',
         theme,
         onError,
     }
+
+    const [toolsVisible, setToolsVisible] = useState(false)
 
     return (
         <LexicalComposer
@@ -88,10 +95,25 @@ export function Editor(props: {
         >
             <div className='relative'>
                 <RichTextPlugin
-                    contentEditable={<ContentEditable className={cn('outline-none', props.contentClassName)} contentEditable={false} />}
+                    contentEditable={
+                        <ContentEditable
+                            className={cn('EditorContentEditableDiv outline-none', props.contentClassName)}
+                            contentEditable={false}
+                        />
+                    }
                     ErrorBoundary={LexicalErrorBoundary}
-                    placeholder={<Placeholder>Add description...</Placeholder>}
+                    placeholder={<Placeholder className={props.placeholderClassName}>{props.placeholder}</Placeholder>}
                 />
+                {props.toolbarHidden && !props.disabled && (
+                    <Button
+                        variant='ghost'
+                        size='icon'
+                        className='absolute right-0 top-0 size-6'
+                        onClick={() => setToolsVisible((prev) => !prev)}
+                    >
+                        <PencilRulerIcon size={16} />
+                    </Button>
+                )}
             </div>
             <HistoryPlugin />
             <AutoFocusPlugin />
@@ -100,22 +122,26 @@ export function Editor(props: {
             <AutoLinkPlugin matchers={MATCHERS} />
             <MarkdownShortcutPlugin transformers={EDITOR_TRANSFORMERS} />
             {!props.toolbarHidden && <Toolbar className={props.toolbarClassName} />}
+            {toolsVisible && !props.disabled && (
+                <Toolbar className={cn('absolute right-0 left-0 bottom-[-60px] bg-background border rounded-md', props.toolbarClassName)} />
+            )}
             <EditorValue onChange={props.onChange} initialValue={props.initialValue} />
             <EditablePlugin enabled={!props.disabled} initialValue={props.initialValue} />
+            <ValueUpdaterPlugin value={props.value} />
         </LexicalComposer>
     )
 }
 
 function EditorValue(props: {
     initialValue?: SerializedEditorState
-    onChange: (editorState: SerializedEditorState) => void
+    onChange?: (editorState: SerializedEditorState) => void
 }) {
     const [editor] = useLexicalComposerContext()
 
     useEffect(() => {
         const unregister = editor.registerUpdateListener(({ editorState }) => {
             editorState.read(() => {
-                props.onChange(editor.toJSON().editorState)
+                props.onChange?.(editor.toJSON().editorState)
             })
         })
 
@@ -142,6 +168,23 @@ function EditorValue(props: {
             initialValueSetRef.current = true
         })
     }, [editor, props])
+
+    return null
+}
+
+function ValueUpdaterPlugin(props: { value?: SerializedEditorState }) {
+    const [editor] = useLexicalComposerContext()
+
+    useEffect(() => {
+        editor.update(() => {
+            if (!props.value) {
+                return
+            }
+
+            const editorState = editor.parseEditorState(props.value)
+            editor.setEditorState(editorState)
+        })
+    }, [editor, props.value])
 
     return null
 }
