@@ -79,7 +79,7 @@ export function NewTicketModal(props: { children: React.ReactNode }) {
                         <ChipButton className='border-primary/20 text-primary/60 border-dashed bg-transparent'>subcategory</ChipButton>
                     </div>
                     <FlatInput
-                        className='text-xl placeholder:font-bold'
+                        className='text-xl placeholder:font-bold mb-2'
                         placeholder={ticketTitle}
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
@@ -87,7 +87,7 @@ export function NewTicketModal(props: { children: React.ReactNode }) {
                     <Editor
                         initialValue={value}
                         onChange={(value) => setValue(value)}
-                        contentClassName='h-[calc(var(--screen-height)_-_161px)] min-h-[min(calc(var(--screen-height)_-_200px),_110px)] sm:h-auto sm:max-h-[calc(var(--screen-height)_-_180px)] overflow-auto'
+                        contentClassName='h-[calc(var(--screen-height)_-_169px)] min-h-[min(calc(var(--screen-height)_-_200px),_110px)] sm:h-auto sm:max-h-[calc(var(--screen-height)_-_188px)] overflow-auto'
                         toolbarClassName={toolbarClassName}
                         placeholder={`${addDescription}...`}
                     />
