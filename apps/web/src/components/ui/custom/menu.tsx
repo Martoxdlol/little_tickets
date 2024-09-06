@@ -1,4 +1,4 @@
-import { type ComponentProps, forwardRef } from 'react'
+import { type ComponentProps, type ReactNode, forwardRef } from 'react'
 import { Link } from 'react-router-dom'
 import { cn } from '~/lib/utils'
 import { Skeleton } from '../skeleton'
@@ -53,8 +53,12 @@ export function LinkMenuItem(props: ComponentProps<typeof MenuLink>) {
 
 export function MenuItemSkeleton() {
     return (
-        <div className='h-7 flex items-center pl-3'>
+        <li className='h-7 flex items-center pl-3'>
             <Skeleton className='w-40 h-4 rounded-full' />
-        </div>
+        </li>
     )
+}
+
+export function MenuSectionTitle(props: { children?: ReactNode }) {
+    return <li className='flex pt-3 text-sm pl-3 opacity-secondary'>{props.children}</li>
 }

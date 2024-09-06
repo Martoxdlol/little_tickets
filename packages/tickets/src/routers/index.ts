@@ -1,6 +1,6 @@
 import { TRPCError, channelProcedure, router } from 'api-helpers'
 import { schema } from 'database'
-import { and, eq } from 'drizzle-orm'
+import { and, desc, eq, ne } from 'drizzle-orm'
 import { wait } from 'shared-utils/helpers'
 import { z } from 'zod'
 import { insertTicket } from '../services'
@@ -115,6 +115,22 @@ export const tickets = router({
 
         return ctx.db.query.tickets.findMany({
             where: and(eq(schema.tickets.channelId, ctx.channel.id)),
+        })
+    }),
+
+    listPreview: channelProcedure.query(async ({ ctx }) => {
+        if (!ctx.channel) {
+            return null
+        }
+
+        return ctx.db.query.tickets.findMany({
+            where: and(
+                eq(schema.tickets.channelId, ctx.channel.id),
+                ne(schema.tickets.status, 'done'),
+                ne(schema.tickets.status, 'cancelled'),
+            ),
+            orderBy: desc(schema.tickets.updatedAt),
+            limit: 10,
         })
     }),
 })

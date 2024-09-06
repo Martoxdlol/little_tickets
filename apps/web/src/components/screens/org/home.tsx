@@ -1,9 +1,6 @@
 import { api } from 'api/react'
-import { useString } from 'i18n/react'
-import { Link } from 'react-router-dom'
+import { ChannelPreviewSection } from '~/components/organizations/channel-preview'
 import Center from '~/components/scaffolding/center'
-import { Section } from '~/components/scaffolding/section'
-import { Title } from '~/components/ui/custom/title'
 import { useOrgSlug } from '~/hooks'
 
 export function OrgHome() {
@@ -13,20 +10,20 @@ export function OrgHome() {
         organizationSlug: organization,
     })
 
-    const noTickets = useString('noTickets')
-
     return (
         <>
             {channels?.map((channel) => (
-                <Section key={channel.id}>
-                    <Link to={`/orgs/${organization}/c/${channel.slug}`} className='block hover:underline'>
-                        <Title>{channel.name}</Title>
-                    </Link>
-                    <div className='relative h-24 rounded-md border border-dashed border-black/25 dark:border-white/25'>
-                        <Center className='text-xs opacity-secondary'>{noTickets}</Center>
-                    </div>
-                </Section>
+                <ChannelPreviewSection key={channel.id} channel={channel} orgSlug={organization} />
             ))}
+
+            {channels?.length === 0 && (
+                <Center className='h-32'>
+                    <div className='text-center'>
+                        <p>No channels</p>
+                        <p>Use the side bar to create a new channel</p>
+                    </div>
+                </Center>
+            )}
         </>
     )
 }

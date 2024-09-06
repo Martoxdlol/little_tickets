@@ -11,6 +11,7 @@ export const appStringsEnglish = {
     nameErrorMessage: 'Must be between 1 and 255 characters',
     newTicket: 'New ticket',
     noTickets: 'No tickets',
+    noActiveTickets: 'No active tickets',
     theme: 'Theme',
     home: 'Home',
     newChannel: 'New channel',

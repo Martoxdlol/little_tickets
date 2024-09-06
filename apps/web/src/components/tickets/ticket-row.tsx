@@ -9,7 +9,6 @@ export function TicketRow(props: {
     return (
         <Link
             to={`/orgs/${props.orgSlug}/c/${props.channelSlug}/t/${props.ticket.code}`}
-            key={props.ticket.id}
             className='flex items-center h-10 pl-6 border-b hover:bg-primary/5 text-sm'
         >
             <span className='w-12'>{props.ticket.code}</span> {props.ticket.title}

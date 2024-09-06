@@ -53,7 +53,7 @@ export const channels = router({
             }),
         )
         .query(async ({ ctx, input }) => {
-            let channels = await getUserChannels(ctx.db, ctx.organization.id)
+            let channels = await getUserChannels(ctx.db, ctx.organization.id, ctx.session.userId)
 
             if (input.canCreateNew) {
                 channels = channels.filter((channel) => {

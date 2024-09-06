@@ -102,8 +102,6 @@ function TicketScreenContent(props: {
         ticketCode: props.ticket.code,
     })
 
-    console.log(comments.data)
-
     return (
         <PageLayout>
             <Section
@@ -139,10 +137,15 @@ function TicketScreenContent(props: {
                     placeholder={`${addDescriptionStr}...`}
                 />
             </Section>
-            <Section className='lg:mx-[10%] 2xl:mx-[15%]'>
+            <Section className='lg:mx-[10%] 2xl:mx-[15%] gap-4'>
                 <Title className='text-md opacity-secondary'>Activity</Title>
                 {comments.data?.map((comment) => (
-                    <CommentCard comment={comment} channelSlug={props.channelSlug} organizationSlug={props.organizationSlug} />
+                    <CommentCard
+                        key={comment.id}
+                        comment={comment}
+                        channelSlug={props.channelSlug}
+                        organizationSlug={props.organizationSlug}
+                    />
                 ))}
                 <LeaveCommentCard channelSlug={props.channelSlug} orgSlug={props.organizationSlug} ticketCode={props.ticket.code} />
             </Section>

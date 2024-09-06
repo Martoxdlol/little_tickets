@@ -13,6 +13,7 @@ export const appStringsSpanish: Record<AppStringsKeys, string | null> = {
     nameErrorMessage: 'Debe tener entre 1 y 255 caracteres',
     newTicket: 'Nuevo ticket',
     noTickets: 'Sin tickets',
+    noActiveTickets: 'Sin tickets activos',
     theme: 'Tema',
     home: 'Inicio',
     newChannel: 'Nuevo canal',

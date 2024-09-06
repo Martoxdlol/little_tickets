@@ -1,7 +1,7 @@
 import { api } from 'api/react'
 import { useString } from 'i18n/react'
 import Center from '~/components/scaffolding/center'
-import { TicketRow } from '~/components/skeletons/ticket-row'
+import { TicketRow } from '~/components/tickets/ticket-row'
 import { useChannelSlug, useOrgSlug } from '~/hooks'
 
 export function ChannelScreen() {

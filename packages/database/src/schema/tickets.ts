@@ -59,6 +59,9 @@ export const tickets = createTable(
         uniqueCode: unique().on(t.code, t.channelId),
         organizationIdIndex: index().on(t.organizationId),
         channelIdIndex: index().on(t.channelId),
+        createdAtIndex: index().on(t.createdAt),
+        updatedAtIndex: index().on(t.updatedAt),
+        statusIndex: index().on(t.status),
     }),
 )
 
