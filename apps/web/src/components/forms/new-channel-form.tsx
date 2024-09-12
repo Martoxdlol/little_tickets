@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useOrgSlug } from '~/hooks'
 import { NameSlugForm } from './name-slug-form'
 
-export function NewChannelForm() {
+export function NewChannelForm(props: { onClose?: () => void }) {
     const { mutateAsync: createOrg } = api.channels.create.useMutation()
 
     const navigate = useNavigate()
@@ -25,6 +25,7 @@ export function NewChannelForm() {
 
                 utils.channels.list.refetch()
 
+                props.onClose?.()
                 navigate(`/orgs/${orgSlug}/c/${slug}`)
                 return undefined
             }}
