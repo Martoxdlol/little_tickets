@@ -9,14 +9,8 @@ import { ListPlugin } from '@lexical/react/LexicalListPlugin'
 import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPlugin'
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin'
 
-import { CodeHighlightNode, CodeNode } from '@lexical/code'
-import { HashtagNode } from '@lexical/hashtag'
-import { AutoLinkNode, LinkNode } from '@lexical/link'
-import { ListItemNode, ListNode } from '@lexical/list'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
-import { HorizontalRuleNode } from '@lexical/react/LexicalHorizontalRuleNode'
-import { HeadingNode, QuoteNode } from '@lexical/rich-text'
-import { TableCellNode, TableNode, TableRowNode } from '@lexical/table'
+import { nodes } from 'editor-helpers/services'
 import type { SerializedEditorState } from 'lexical'
 import { PencilRulerIcon } from 'lucide-react'
 import { type ReactNode, useEffect, useRef, useState } from 'react'
@@ -75,21 +69,7 @@ export function Editor(props: {
         <LexicalComposer
             initialConfig={{
                 ...initialConfig,
-                nodes: [
-                    ListNode,
-                    ListItemNode,
-                    HeadingNode,
-                    QuoteNode,
-                    AutoLinkNode,
-                    LinkNode,
-                    HorizontalRuleNode,
-                    TableCellNode,
-                    TableRowNode,
-                    TableNode,
-                    HashtagNode,
-                    CodeHighlightNode,
-                    CodeNode,
-                ],
+                nodes,
             }}
         >
             <div className='relative'>
@@ -140,6 +120,7 @@ function EditorValue(props: {
         const unregister = editor.registerUpdateListener(({ editorState }) => {
             editorState.read(() => {
                 props.onChange?.(editor.toJSON().editorState)
+                console.log(editor.toJSON().editorState)
             })
         })
 

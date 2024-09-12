@@ -5,6 +5,7 @@ import { ErrorScreen } from '../screens/error'
 import { HomeScreen } from '../screens/home'
 import { ChannelScreen } from '../screens/org/channel'
 import { OrgHome } from '../screens/org/home'
+import { OrgSettingsPage } from '../screens/org/settings'
 import { TicketScreen } from '../screens/org/ticket'
 
 export const router = createBrowserRouter([
@@ -40,6 +41,10 @@ export const router = createBrowserRouter([
             {
                 path: 'c/:channel/t/:ticket',
                 element: <TicketScreen />,
+            },
+            {
+                path: 'settings',
+                element: <OrgSettingsPage />,
             },
         ],
     },

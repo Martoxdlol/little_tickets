@@ -1,0 +1,29 @@
+{
+    "name": "editor-helpers",
+    "module": "index.ts",
+    "type": "module",
+    "exports": {
+        "./services": "./src/services/index.ts",
+        "./server": "./src/server/index.ts"
+    },
+    "dependencies": {
+        "@lexical/code": "^0.17.0",
+        "@lexical/hashtag": "^0.17.0",
+        "@lexical/headless": "^0.17.1",
+        "@lexical/link": "^0.17.0",
+        "@lexical/list": "^0.17.0",
+        "@lexical/markdown": "^0.17.0",
+        "@lexical/react": "^0.17.0",
+        "@lexical/rich-text": "^0.17.0",
+        "@lexical/selection": "^0.17.0",
+        "@lexical/table": "^0.17.0",
+        "@lexical/utils": "^0.17.0",
+        "lexical": "^0.17.1"
+    },
+    "devDependencies": {
+        "@types/bun": "latest"
+    },
+    "peerDependencies": {
+        "typescript": "^5.5.0"
+    }
+}

@@ -1,6 +1,7 @@
 import { TRPCError, channelProcedure, router } from 'api-helpers'
 import { schema } from 'database'
 import { and, desc, eq, ne } from 'drizzle-orm'
+import { safeSanitizeEditorContent } from 'editor-helpers/server'
 import { wait } from 'shared-utils/helpers'
 import { z } from 'zod'
 import { insertTicket } from '../services'
@@ -28,13 +29,21 @@ export const tickets = router({
                 })
             }
 
+            const sanitizedDescription = await safeSanitizeEditorContent(input.description)
+
+            if (!sanitizedDescription) {
+                throw new TRPCError({
+                    code: 'BAD_REQUEST',
+                })
+            }
+
             // for in range 5
             for (let i = 0; i < 5; i++) {
                 try {
                     return (
                         await insertTicket(ctx.db, {
                             channelId: ctx.channel.id,
-                            description: input.description,
+                            description: sanitizedDescription,
                             status: 'pending',
                             title: input.title,
                             createdByUserId: ctx.session.userId,
@@ -172,8 +181,16 @@ export const comments = router({
             })
         }
 
+        const sanitizedContent = await safeSanitizeEditorContent(input.content)
+
+        if (!sanitizedContent) {
+            throw new TRPCError({
+                code: 'BAD_REQUEST',
+            })
+        }
+
         return await ctx.db.insert(schema.comments).values({
-            content: input.content,
+            content: sanitizedContent,
             createdByUserId: ctx.session.userId,
             ticketId: ticket.id,
             organizationId: ctx.organization.id,

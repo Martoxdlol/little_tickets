@@ -22,7 +22,7 @@ export function ChannelPreviewSection(props: { channel: RouterOutputs['channels'
             </Link>
 
             {tickets?.length !== 0 && (
-                <div className='relative rounded-md border overflow-hidden last:[&>*]:border-none'>
+                <div className='relative -mx-4 sm:mx-0 sm:rounded-md border-y sm:border-x overflow-hidden last:[&>*]:border-none'>
                     {isPending && (
                         <>
                             <TicketRowSkeleton />
