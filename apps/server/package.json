@@ -4,7 +4,7 @@
     "type": "module",
     "scripts": {
         "dev": "NODE_ENV=development bun --watch src/index.ts",
-        "build": "esbuild src/index.ts --bundle --platform=node --format=esm --outfile=dist/server.js"
+        "build": "esbuild src/index.ts --bundle --platform=node --format=esm --sourcemap --outfile=dist/server.js"
     },
     "devDependencies": {
         "@types/bun": "latest",
