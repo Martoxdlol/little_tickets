@@ -8,6 +8,8 @@ export const comments = createTable('comment', {
 
     content: json('content').notNull(),
 
+    contentText: text('content_text').notNull(),
+
     ticketId: text('ticket_id')
         .notNull()
         .references(() => tickets.id),

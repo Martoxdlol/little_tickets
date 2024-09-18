@@ -1,6 +1,6 @@
 import { createHeadlessEditor } from '@lexical/headless'
 import { $isMarkNode, $unwrapMarkNode } from '@lexical/mark'
-import { $getRoot, $isElementNode, type LexicalNode } from 'lexical'
+import { $getRoot, $isElementNode, type LexicalNode, type SerializedEditorState } from 'lexical'
 import { nodes } from '../services'
 
 export function createEditor() {
@@ -32,7 +32,7 @@ function $sanitizeNode(node: LexicalNode) {
 }
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-export function sanitizeEditorContent(content: any) {
+export function sanitizeEditorContent(content: any): Promise<{ json: SerializedEditorState; text: string }> {
     return new Promise((resolve, reject) => {
         const editor = createEditor()
         try {
@@ -46,7 +46,10 @@ export function sanitizeEditorContent(content: any) {
                 return reject(new Error('Failed to sanitize editor content.'))
             }
 
-            resolve(editor.toJSON().editorState)
+            resolve({
+                json: editor.toJSON().editorState,
+                text: $getRoot().getTextContent(),
+            })
         })
     })
 }

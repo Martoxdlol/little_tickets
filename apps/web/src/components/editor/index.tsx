@@ -11,7 +11,7 @@ import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin'
 
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { nodes } from 'editor-helpers/services'
-import type { SerializedEditorState } from 'lexical'
+import { $getRoot, type SerializedEditorState } from 'lexical'
 import { PencilRulerIcon } from 'lucide-react'
 import { type ReactNode, useEffect, useRef, useState } from 'react'
 import { cn } from '~/lib/utils'
@@ -49,7 +49,7 @@ function onError(error: unknown) {
 
 export function Editor(props: {
     contentClassName?: string
-    onChange?: (editorState: SerializedEditorState) => void
+    onChange?: (editorState: SerializedEditorState, textContent: string) => void
     initialValue?: SerializedEditorState
     toolbarClassName?: string
     placeholderClassName?: string
@@ -112,14 +112,15 @@ export function Editor(props: {
 
 function EditorValue(props: {
     initialValue?: SerializedEditorState
-    onChange?: (editorState: SerializedEditorState) => void
+    onChange?: (editorState: SerializedEditorState, textContent: string) => void
 }) {
     const [editor] = useLexicalComposerContext()
 
     useEffect(() => {
         const unregister = editor.registerUpdateListener(({ editorState }) => {
             editorState.read(() => {
-                props.onChange?.(editor.toJSON().editorState)
+                const textContent = $getRoot().getTextContent()
+                props.onChange?.(editor.toJSON().editorState, textContent)
                 console.log(editor.toJSON().editorState)
             })
         })

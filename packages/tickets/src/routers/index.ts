@@ -29,9 +29,9 @@ export const tickets = router({
                 })
             }
 
-            const sanitizedDescription = await safeSanitizeEditorContent(input.description)
+            const result = await safeSanitizeEditorContent(input.description)
 
-            if (!sanitizedDescription) {
+            if (!result) {
                 throw new TRPCError({
                     code: 'BAD_REQUEST',
                 })
@@ -43,7 +43,8 @@ export const tickets = router({
                     return (
                         await insertTicket(ctx.db, {
                             channelId: ctx.channel.id,
-                            description: sanitizedDescription,
+                            description: result.json,
+                            descriptionText: result.text,
                             status: 'pending',
                             title: input.title,
                             createdByUserId: ctx.session.userId,
@@ -181,16 +182,17 @@ export const comments = router({
             })
         }
 
-        const sanitizedContent = await safeSanitizeEditorContent(input.content)
+        const result = await safeSanitizeEditorContent(input.content)
 
-        if (!sanitizedContent) {
+        if (!result || result.text.trim().length === 0) {
             throw new TRPCError({
                 code: 'BAD_REQUEST',
             })
         }
 
         return await ctx.db.insert(schema.comments).values({
-            content: sanitizedContent,
+            content: result.json,
+            contentText: result.text,
             createdByUserId: ctx.session.userId,
             ticketId: ticket.id,
             organizationId: ctx.organization.id,

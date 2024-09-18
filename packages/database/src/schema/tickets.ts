@@ -20,6 +20,7 @@ export const tickets = createTable(
 
         title: varchar('title', { length: 512 }).notNull(),
         description: json('description').notNull(),
+        descriptionText: text('description_text').notNull(),
 
         version,
 

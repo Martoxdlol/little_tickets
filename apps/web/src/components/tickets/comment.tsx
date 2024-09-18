@@ -1,7 +1,7 @@
 import { type RouterOutputs, api } from 'api/react'
 import { useString } from 'i18n/react'
 import type { SerializedEditorState } from 'lexical'
-import { CheckIcon, EllipsisVerticalIcon, Loader2Icon } from 'lucide-react'
+import { CheckIcon, EllipsisVerticalIcon, Loader2Icon, SaveIcon, XIcon } from 'lucide-react'
 import { useState } from 'react'
 import { Editor } from '~/components/editor'
 import { SmallIconButton } from '~/components/ui/custom/icon-button'
@@ -20,6 +20,7 @@ export function LeaveCommentCard(props: {
     const saveCommentStr = useString('saveComment')
 
     const [value, setValue] = useState<SerializedEditorState>()
+    const [text, setText] = useState('')
 
     const createComment = api.comments.create.useMutation()
 
@@ -51,13 +52,16 @@ export function LeaveCommentCard(props: {
                 toolbarHidden
                 placeholder={leaveCommentStr}
                 toolbarClassName='bottom-[-35px]'
-                onChange={(value) => setValue(value)}
+                onChange={(value, text) => {
+                    setValue(value)
+                    setText(text)
+                }}
                 initialValue={value}
             />
             <div className='flex items-center justify-end gap-2'>
                 <SmallIconButton
                     icon={createComment.isPending ? <Loader2Icon className='animate-spin' /> : <CheckIcon />}
-                    disabled={createComment.isPending}
+                    disabled={createComment.isPending || !text.trim()}
                     onClick={handleCreateComment}
                 >
                     {saveCommentStr}
@@ -88,14 +92,31 @@ export function CommentCard(props: {
             })
     }
 
+    const [edit, setEdit] = useState(false)
+
     return (
         <div
             key={props.comment.id}
-            className='bg-background dark:bg-secondary border border-primary/10 dark:border-primary/5 rounded-lg p-4'
+            className='relative bg-background dark:bg-secondary border border-primary/10 dark:border-primary/5 rounded-lg p-4'
         >
             <div className='flex items-center mb-2 gap-2'>
                 <UserAvatar name={props.comment.user.name} picture={props.comment.user.picture} className='size-6 text-xs' />
                 <span className='text-sm flex-grow'>{props.comment.user.name}</span>
+                {edit && (
+                    <>
+                        <SmallIconButton className='-mt-2' icon={<XIcon />} disabled={false} onClick={() => setEdit(false)} variant='ghost'>
+                            Cancel
+                        </SmallIconButton>
+                        <SmallIconButton
+                            className='-mt-2'
+                            icon={false ? <Loader2Icon className='animate-spin' /> : <SaveIcon />}
+                            disabled={false}
+                            onClick={() => {}}
+                        >
+                            Save
+                        </SmallIconButton>
+                    </>
+                )}
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant='ghost' size='icon' className='-mt-2 -mr-2'>
@@ -103,14 +124,15 @@ export function CommentCard(props: {
                             <DropdownMenuContent>
                                 <DropdownMenuGroup>
                                     <DropdownMenuItem onClick={handleDeleteComment}>Delete</DropdownMenuItem>
-                                    <DropdownMenuItem>Edit</DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => setEdit(true)}>Edit</DropdownMenuItem>
                                 </DropdownMenuGroup>
                             </DropdownMenuContent>
                         </Button>
                     </DropdownMenuTrigger>
                 </DropdownMenu>
             </div>
-            <Editor initialValue={props.comment.content as any} disabled toolbarHidden />
+            {/* biome-ignore lint/suspicious/noExplicitAny: <explanation> */}
+            <Editor initialValue={props.comment.content as any} disabled={!edit} toolbarHidden toolbarClassName='-bottom-12 z-20' />
         </div>
     )
 }
