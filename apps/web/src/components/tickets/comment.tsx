@@ -6,7 +6,6 @@ import { useState } from 'react'
 import { Editor } from '~/components/editor'
 import { SmallIconButton } from '~/components/ui/custom/icon-button'
 import { UserAvatar } from '../auth/user-avatar'
-import { Button } from '../ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu'
 
 export function LeaveCommentCard(props: {
@@ -46,7 +45,7 @@ export function LeaveCommentCard(props: {
     }
 
     return (
-        <div className='flex flex-col gap-2 bg-background dark:bg-secondary border border-primary/10 dark:border-primary/5 rounded-lg p-4 relative'>
+        <div className='flex flex-col gap-2 bg-background dark:bg-secondary/50 border border-primary/10 dark:border-primary/5 rounded-lg p-4 relative'>
             <Editor
                 key={key}
                 toolbarHidden
@@ -97,18 +96,17 @@ export function CommentCard(props: {
     return (
         <div
             key={props.comment.id}
-            className='relative bg-background dark:bg-secondary border border-primary/10 dark:border-primary/5 rounded-lg p-4'
+            className='relative bg-background dark:bg-secondary/50 border border-primary/10 dark:border-primary/5 rounded-lg p-4'
         >
-            <div className='flex items-center mb-2 gap-2'>
+            <div className='flex items-center mb-2 gap-2 overflow-x-auto'>
                 <UserAvatar name={props.comment.user.name} picture={props.comment.user.picture} className='size-6 text-xs' />
-                <span className='text-sm flex-grow'>{props.comment.user.name}</span>
+                <span className='text-sm flex-grow text-nowrap'>{props.comment.user.name}</span>
                 {edit && (
                     <>
-                        <SmallIconButton className='-mt-2' icon={<XIcon />} disabled={false} onClick={() => setEdit(false)} variant='ghost'>
+                        <SmallIconButton icon={<XIcon />} disabled={false} onClick={() => setEdit(false)} variant='ghost'>
                             Cancel
                         </SmallIconButton>
                         <SmallIconButton
-                            className='-mt-2'
                             icon={false ? <Loader2Icon className='animate-spin' /> : <SaveIcon />}
                             disabled={false}
                             onClick={() => {}}
@@ -119,7 +117,7 @@ export function CommentCard(props: {
                 )}
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button variant='ghost' size='icon' className='-mt-2 -mr-2'>
+                        <button type='button'>
                             <EllipsisVerticalIcon size={16} />
                             <DropdownMenuContent>
                                 <DropdownMenuGroup>
@@ -127,7 +125,7 @@ export function CommentCard(props: {
                                     <DropdownMenuItem onClick={() => setEdit(true)}>Edit</DropdownMenuItem>
                                 </DropdownMenuGroup>
                             </DropdownMenuContent>
-                        </Button>
+                        </button>
                     </DropdownMenuTrigger>
                 </DropdownMenu>
             </div>
