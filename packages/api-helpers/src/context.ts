@@ -1,5 +1,4 @@
 import type { FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch'
-import { lucia } from 'auth-helpers'
 import { type Database, db } from 'database'
 
 export type Context = {
