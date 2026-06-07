@@ -5,6 +5,7 @@ import postgres from 'postgres'
 import * as schema from './schema'
 
 export { schema }
+export { and, eq } from 'drizzle-orm'
 
 export const conn = postgres(process.env.DATABASE_URL!)
 

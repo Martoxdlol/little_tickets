@@ -2,7 +2,7 @@ import { generateCodeVerifier, generateState } from 'arctic'
 import { db } from 'database'
 import { Hono } from 'hono'
 import { deleteCookie, getCookie, setCookie } from 'hono/cookie'
-import type { GoogleUser, MicrosoftUser } from '../models'
+import type { GitHubUser, GoogleUser, MicrosoftUser } from '../models'
 import { github, google, lucia, microsoft } from '../services/lucia'
 import {
     consumeAuthLocaleCookie,
@@ -37,7 +37,7 @@ export const auth = new Hono()
 
     .get('/login/github', async (c) => {
         const state = generateState()
-        const url = await github.createAuthorizationURL(state)
+        const url = await github.createAuthorizationURL(state, { scopes: ['user:email'] })
 
         setTempCookie(c, 'github_oauth_state', state)
 
@@ -81,7 +81,23 @@ export const auth = new Hono()
                 },
             })
 
-            const user = await upsertGithubUser(db, await githubUserResponse.json(), consumeAuthLocaleCookie(c))
+            const githubUser: GitHubUser = await githubUserResponse.json()
+
+            // GitHub omits the email from /user when the user keeps it private. The `user:email`
+            // scope lets us read it from /user/emails, so always resolve a verified primary there.
+            if (!githubUser.email) {
+                const emailsResponse = await fetch('https://api.github.com/user/emails', {
+                    headers: {
+                        Authorization: `Bearer ${tokens.accessToken}`,
+                    },
+                })
+
+                const emails: Array<{ email: string; primary: boolean; verified: boolean }> = await emailsResponse.json()
+                const verified = Array.isArray(emails) ? emails.filter((e) => e.verified) : []
+                githubUser.email = verified.find((e) => e.primary)?.email ?? verified[0]?.email ?? null
+            }
+
+            const user = await upsertGithubUser(db, githubUser, consumeAuthLocaleCookie(c))
 
             const session = await lucia.createSession(user.id, {})
             const sessionCookie = lucia.createSessionCookie(session.id)

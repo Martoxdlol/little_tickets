@@ -27,6 +27,7 @@ export function Combobox<T extends { toString(): string }>(props: {
     emptyText?: string
     className?: string
     children?: React.ReactNode
+    footer?: (close: () => void) => React.ReactNode
 }) {
     const [open, setOpen] = useState(false)
     const value = props.value
@@ -128,6 +129,7 @@ export function Combobox<T extends { toString(): string }>(props: {
                             ))}
                         </CommandGroup>
                     </CommandList>
+                    {props.footer && <div className='border-t p-1'>{props.footer(() => setOpen(false))}</div>}
                 </Command>
             </PopoverContent>
         </Popover>

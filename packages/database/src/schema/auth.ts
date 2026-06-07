@@ -8,8 +8,8 @@ export const users = createTable('user', {
     githubUsername: varchar('github_username', { length: 256 }),
     name: varchar('name', { length: 256 }).notNull(),
     picture: varchar('picture', { length: 256 }),
-    email: varchar('email', { length: 256 }),
-    emailVerifiedAt: date('email_verified_at'),
+    email: varchar('email', { length: 256 }).notNull().unique(),
+    emailVerifiedAt: date('email_verified_at').notNull(),
     githubId: integer('github_id').unique(undefined, {
         nulls: 'distinct',
     }),
