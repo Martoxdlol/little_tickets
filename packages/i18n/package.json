@@ -6,12 +6,11 @@
         "./strings": "./src/strings/index.ts"
     },
     "devDependencies": {
-        "@types/bun": "latest"
-    },
-    "dependencies": {
-        "auth-components": "workspace:*"
+        "@types/bun": "latest",
+        "@types/react": "^18.3.3"
     },
     "peerDependencies": {
-        "typescript": "^5.0.0"
+        "react": "^18.3.1",
+        "typescript": "^5.5.4"
     }
 }

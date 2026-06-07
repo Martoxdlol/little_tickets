@@ -42,8 +42,10 @@
         "react-dom": "^18.3.1",
         "react-router-dom": "^6.26.1",
         "shared-utils": "workspace:*",
+        "superjson": "^2.2.1",
         "tailwind-merge": "^2.5.2",
-        "tailwindcss-animate": "^1.0.7"
+        "tailwindcss-animate": "^1.0.7",
+        "@trpc/server": "^11.0.0-rc.332"
     },
     "devDependencies": {
         "@eslint/js": "^9.9.0",
