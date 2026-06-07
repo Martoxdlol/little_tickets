@@ -1,8 +1,10 @@
 'use client'
 
 import { useSession } from 'auth-components'
-import { useString } from 'i18n/react'
-import { LanguagesIcon, LogOut, MoonIcon, SunIcon } from 'lucide-react'
+import { useLang, useSetLang, useString } from 'i18n/react'
+import type { LangKeys } from 'i18n/strings'
+import { LanguagesIcon, LogOut, MailIcon, MoonIcon, SunIcon } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -36,6 +38,14 @@ export function UserDropDown(props: { children: React.ReactNode }) {
     const { setTheme, theme } = useTheme()
 
     const themeStr = useString('theme')
+    const lightStr = useString('themeLight')
+    const darkStr = useString('themeDark')
+    const systemStr = useString('themeSystem')
+    const languageStr = useString('language')
+    const invitationsStr = useString('invitationsTitle')
+    const lang = useLang()
+    const setLang = useSetLang()
+    const navigate = useNavigate()
 
     return (
         <DropdownMenu>
@@ -53,13 +63,13 @@ export function UserDropDown(props: { children: React.ReactNode }) {
                         <DropdownMenuSubContent>
                             <DropdownMenuRadioGroup value={theme} onValueChange={(theme) => setTheme(theme as Theme)}>
                                 <DropdownMenuRadioItem value='light' className='flex items-center gap-2'>
-                                    Light
+                                    {lightStr}
                                 </DropdownMenuRadioItem>
                                 <DropdownMenuRadioItem value='dark' className='flex items-center gap-2'>
-                                    Dark
+                                    {darkStr}
                                 </DropdownMenuRadioItem>
                                 <DropdownMenuRadioItem value='system' className='flex items-center gap-2'>
-                                    System
+                                    {systemStr}
                                 </DropdownMenuRadioItem>
                             </DropdownMenuRadioGroup>
                         </DropdownMenuSubContent>
@@ -68,11 +78,11 @@ export function UserDropDown(props: { children: React.ReactNode }) {
                 <DropdownMenuSub>
                     <DropdownMenuSubTrigger>
                         <LanguagesIcon className='mr-2 size-4' />
-                        <span>Language</span>
+                        <span>{languageStr}</span>
                     </DropdownMenuSubTrigger>
                     <DropdownMenuPortal>
                         <DropdownMenuSubContent>
-                            <DropdownMenuRadioGroup>
+                            <DropdownMenuRadioGroup value={lang} onValueChange={(value) => setLang(value as LangKeys)}>
                                 <DropdownMenuRadioItem value='en' className='flex items-center gap-2'>
                                     English
                                 </DropdownMenuRadioItem>
@@ -83,6 +93,11 @@ export function UserDropDown(props: { children: React.ReactNode }) {
                         </DropdownMenuSubContent>
                     </DropdownMenuPortal>
                 </DropdownMenuSub>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => navigate('/invitations')}>
+                    <MailIcon className='mr-2 h-4 w-4' />
+                    <span>{invitationsStr}</span>
+                </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                     onClick={() => {

@@ -15,6 +15,7 @@ export function TicketScreen() {
     const orgId = useOrgSlug()!
     const channelSlug = useChannelSlug()!
     const ticketCode = useTicketCode()!
+    const ticketNotFoundStr = useString('ticketNotFound')
 
     const query = api.tickets.get.useQuery({
         organizationSlug: orgId,
@@ -29,7 +30,7 @@ export function TicketScreen() {
     if (!query.isSuccess && query.data === null) {
         return (
             <Center>
-                <p className='opacity-secondary'>Ticket not found</p>
+                <p className='opacity-secondary'>{ticketNotFoundStr}</p>
             </Center>
         )
     }
@@ -77,6 +78,7 @@ function TicketScreenContent(props: {
     const cancelStr = useString('cancel')
     const addDescriptionStr = useString('addDescription')
     const ticketTitle = useString('ticketTitle')
+    const activityStr = useString('activity')
 
     function handleSave() {
         updateTicket
@@ -138,7 +140,7 @@ function TicketScreenContent(props: {
                 />
             </Section>
             <Section className='lg:mx-[10%] 2xl:mx-[15%] gap-4'>
-                <Title className='text-md opacity-secondary'>Activity</Title>
+                <Title className='text-md opacity-secondary'>{activityStr}</Title>
                 {comments.data?.map((comment) => (
                     <CommentCard
                         key={comment.id}

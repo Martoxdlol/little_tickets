@@ -6,6 +6,7 @@ import { useChannelSlug, useOrgSlug } from '~/hooks'
 
 export function ChannelScreen() {
     const nothingHere = useString('nothingHere')
+    const channelNotFound = useString('channelNotFound')
 
     const orgSlug = useOrgSlug()!
     const channelSlug = useChannelSlug()!
@@ -18,7 +19,7 @@ export function ChannelScreen() {
     if (query.error?.data?.code === 'NOT_FOUND') {
         return (
             <Center>
-                <p className='opacity-secondary'>Channel not found</p>
+                <p className='opacity-secondary'>{channelNotFound}</p>
             </Center>
         )
     }

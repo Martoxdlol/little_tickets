@@ -3,6 +3,7 @@ import { useString } from 'i18n/react'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { NewOrgForm } from '../forms/new-org-form'
+import { PendingInvitations } from '../organizations/pending-invitations'
 import PageContainer from '../scaffolding/page-container'
 import PageLayout from '../scaffolding/page-layout'
 import { Scaffold } from '../scaffolding/scaffold'
@@ -15,7 +16,6 @@ import { Title } from '../ui/custom/title'
 export function HomeScreen() {
     const createOrganizationString = useString('createOrganization')
     const joinOrganizationString = useString('joinExistingOrganization')
-    const noPendingInvitationsString = useString('noPendingInvitations')
 
     const { data: orgs, isPending } = api.organizations.list.useQuery()
 
@@ -51,7 +51,7 @@ export function HomeScreen() {
                     </Section>
                     <Section>
                         <Title>{joinOrganizationString}</Title>
-                        <p className='text-sm opacity-secondary'>{noPendingInvitationsString}</p>
+                        <PendingInvitations />
                     </Section>
                 </PageLayout>
             </PageContainer>

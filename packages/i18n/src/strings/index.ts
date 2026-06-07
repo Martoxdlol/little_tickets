@@ -22,10 +22,18 @@ export function getLang(locale: string) {
     return lang
 }
 
-export function getString(key: AppStringsKeys, locale: string) {
+export type StringParams = Record<string, string | number>
+
+export function getString(key: AppStringsKeys, locale: string, params?: StringParams) {
     const lang = getLang(locale)
 
-    return allAppStrings[lang][key] ?? allAppStrings.en[key]!
+    const template = allAppStrings[lang][key] ?? allAppStrings.en[key]!
+
+    if (!params) {
+        return template
+    }
+
+    return template.replace(/\{(\w+)\}/g, (match, name) => (name in params ? String(params[name]) : match))
 }
 
 export function langIsSupported(lang: string): lang is LangKeys {

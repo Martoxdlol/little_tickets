@@ -103,11 +103,15 @@ export const organizationProcedure = optionalOrganizationProcedure.use(async ({ 
 })
 
 export const channelProcedure = organizationProcedure.input(z.object({ channelSlug: z.string() })).use(async ({ input, ctx, next }) => {
+    // Left join the caller's membership row: the channel exists independently of whether the
+    // caller is a member, so access can also be granted via a public channel or org-admin role.
     const [result] = await ctx.db
         .select({
             id: schema.channels.id,
             name: schema.channels.name,
             slug: schema.channels.slug,
+            public: schema.channels.public,
+            memberId: schema.channelMembers.id,
             allowCreateNew: schema.channelMembers.allowCreateNew,
             allowViewAll: schema.channelMembers.allowViewAll,
             allowCommentOnAll: schema.channelMembers.allowCommentOnAll,
@@ -128,17 +132,21 @@ export const channelProcedure = organizationProcedure.input(z.object({ channelSl
             defaultAllowFullAdmin: schema.channels.defaultAllowFullAdmin,
         })
         .from(schema.channels)
-        .innerJoin(
+        .leftJoin(
             schema.channelMembers,
             and(
-                eq(schema.channels.slug, input.channelSlug),
                 eq(schema.channelMembers.channelId, schema.channels.id),
                 eq(schema.channelMembers.userId, ctx.session.userId),
                 eq(schema.channelMembers.organizationId, ctx.organization.id),
-                eq(schema.channels.organizationId, ctx.organization.id),
             ),
         )
+        .where(and(eq(schema.channels.slug, input.channelSlug), eq(schema.channels.organizationId, ctx.organization.id)))
         .limit(1)
+
+    const isOrgAdmin = ctx.organization.role !== 'member'
+    const isMember = !!result && result.memberId !== null
+    // Access: explicit channel member, a public channel, or an org admin/owner.
+    const hasAccess = !!result && (isMember || result.public || isOrgAdmin)
 
     let canCreateNew = useFirstBoolean(result?.allowCreateNew, result?.defaultAllowCreateNew, ctx.organization.defaultChannelAllowCreateNew)
     let canViewAll = useFirstBoolean(result?.allowViewAll, result?.defaultAllowViewAll, ctx.organization.defaultChannelAllowViewAll)
@@ -173,7 +181,7 @@ export const channelProcedure = organizationProcedure.input(z.object({ channelSl
         result?.defaultAllowFullAdmin,
         ctx.organization.defaultChannelAllowFullAdmin,
     )
-    if (canFullAdmin || ctx.organization.role !== 'member') {
+    if (canFullAdmin || isOrgAdmin) {
         canCreateNew = true
         canViewAll = true
         canCommentOnAll = true
@@ -182,15 +190,30 @@ export const channelProcedure = organizationProcedure.input(z.object({ channelSl
         canManageAll = true
         canManageCreatedSelf = true
         canManageAssignedSelf = true
-        canManageAssignedSelf = true
     }
 
     return next({
         ctx: {
             ...ctx,
-            channel: result
-                ? { ...result, canCreateNew, canViewAll, canCommentOnAll, canManageAll, canManageAssignedSelf, canFullAdmin }
-                : null,
+            channel:
+                hasAccess && result
+                    ? {
+                          id: result.id,
+                          name: result.name,
+                          slug: result.slug,
+                          public: result.public,
+                          isMember,
+                          canCreateNew,
+                          canViewAll,
+                          canCommentOnAll,
+                          canCommentOnCreatedSelf,
+                          canCommentOnAssignedSelf,
+                          canManageAll,
+                          canManageCreatedSelf,
+                          canManageAssignedSelf,
+                          canFullAdmin,
+                      }
+                    : null,
         },
     })
 })

@@ -30,6 +30,11 @@ export function OrganizationMenu() {
     const { data: org } = api.organizations.get.useQuery({ organizationSlug: orgSlug })
 
     const newChannel = useString('newChannel')
+    const channelSectionStr = useString('channelSection')
+    const manageStr = useString('manage')
+    const organizationSectionStr = useString('organizationSection')
+    const membersStr = useString('membersTitle')
+    const settingsStr = useString('settingsTitle')
 
     return (
         <Menu>
@@ -70,21 +75,24 @@ export function OrganizationMenu() {
 
             {(org?.role === 'admin' || org?.role === 'owner') && channelSlug && (
                 <>
-                    <MenuSectionTitle>Channel</MenuSectionTitle>
+                    <MenuSectionTitle>{channelSectionStr}</MenuSectionTitle>
                     <LinkMenuItem to={`/orgs/${orgSlug}/c/${channelSlug}/manage`} icon={<SettingsIcon />}>
-                        Manage
+                        {manageStr}
+                    </LinkMenuItem>
+                    <LinkMenuItem to={`/orgs/${orgSlug}/c/${channelSlug}/members`} icon={<Users2Icon />}>
+                        {membersStr}
                     </LinkMenuItem>
                 </>
             )}
 
             {(org?.role === 'admin' || org?.role === 'owner') && (
                 <>
-                    <MenuSectionTitle>Organization</MenuSectionTitle>
+                    <MenuSectionTitle>{organizationSectionStr}</MenuSectionTitle>
                     <LinkMenuItem to={`/orgs/${orgSlug}/members`} icon={<Users2Icon />}>
-                        Members
+                        {membersStr}
                     </LinkMenuItem>
                     <LinkMenuItem to={`/orgs/${orgSlug}/settings`} icon={<Settings2Icon />}>
-                        Settings
+                        {settingsStr}
                     </LinkMenuItem>
                 </>
             )}
